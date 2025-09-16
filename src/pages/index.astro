@@ -2,49 +2,851 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, TRAINER_NAME, TRAINER_AGE, TRAINER_LOCATION, TRAINER_ORIGIN, EXPERIENCE_YEARS, WHATSAPP_NUMBER } from '../consts';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			:root {
+				--primary-color: #ff1493;
+				--secondary-color: #ffffff;
+				--accent-color: #ff1493;
+				--text-dark: #000000;
+				--text-light: #cccccc;
+				--bg-light: #111111;
+				--white: #ffffff;
+				--black: #000000;
+			}
+			
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			
+			body {
+				font-family: 'Arial', 'Helvetica', sans-serif;
+				line-height: 1.6;
+				color: var(--white);
+				background: var(--black);
+				padding-top: 80px;
+			}
+			
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 20px;
+			}
+			
+			.hero {
+				background: var(--black);
+				color: var(--white);
+				padding: 0;
+				text-align: center;
+				position: relative;
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+			}
+			
+			.hero-image {
+				position: absolute;
+				top: 60px;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center center;
+				z-index: 1;
+			}
+			
+			.hero-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(255, 20, 147, 0.2));
+				z-index: 2;
+			}
+			
+			.hero-content {
+				position: absolute;
+				bottom: 60px;
+				left: 50%;
+				transform: translateX(-50%);
+				z-index: 3;
+				max-width: 800px;
+				padding: 0 20px;
+				width: 100%;
+			}
+			
+			.hero h1 {
+				font-size: 4rem;
+				margin-bottom: 2rem;
+				font-weight: 900;
+				text-transform: uppercase;
+				letter-spacing: 2px;
+			}
+			
+			.hero .subtitle {
+				font-size: 1.4rem;
+				margin-bottom: 3rem;
+				opacity: 0.9;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.cta-buttons {
+				display: flex;
+				gap: 20px;
+				justify-content: center;
+				flex-wrap: wrap;
+				margin-top: 3rem;
+			}
+			
+			.btn {
+				padding: 20px 40px;
+				border: none;
+				border-radius: 0;
+				font-size: 1.1rem;
+				font-weight: 700;
+				text-decoration: none;
+				display: inline-block;
+				transition: all 0.3s ease;
+				cursor: pointer;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.btn-primary {
+				background: var(--primary-color);
+				color: var(--black);
+			}
+			
+			.btn-primary:hover {
+				background: var(--white);
+				transform: translateY(-2px);
+			}
+			
+			.btn-secondary {
+				background: transparent;
+				color: var(--white);
+				border: 2px solid var(--white);
+			}
+			
+			.btn-secondary:hover {
+				background: var(--white);
+				color: var(--black);
+			}
+			
+			.section {
+				padding: 80px 0;
+				background: var(--black);
+			}
+			
+			.section-alt {
+				background: var(--bg-light);
+			}
+			
+			.section h2 {
+				font-size: 2.5rem;
+				text-align: center;
+				margin-bottom: 3rem;
+				color: var(--white);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				font-weight: 700;
+			}
+			
+			.about-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 80px;
+				align-items: center;
+			}
+			
+			.about-content h3 {
+				font-size: 2rem;
+				margin-bottom: 2rem;
+				color: var(--primary-color);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.about-content p {
+				font-size: 1.2rem;
+				margin-bottom: 2rem;
+				color: var(--text-light);
+				line-height: 1.8;
+			}
+			
+			.credentials {
+				background: var(--bg-light);
+				padding: 2rem;
+				margin: 2rem 0;
+				border: 1px solid var(--primary-color);
+			}
+			
+			.credentials h4 {
+				color: var(--primary-color);
+				font-size: 1.3rem;
+				margin-bottom: 1rem;
+				text-transform: uppercase;
+			}
+			
+			.credentials ul {
+				list-style: none;
+				padding: 0;
+			}
+			
+			.credentials li {
+				padding: 0.5rem 0;
+				color: var(--text-light);
+				font-size: 1.1rem;
+			}
+			
+			.mission-statement {
+				background: var(--primary-color);
+				color: var(--black);
+				padding: 2rem;
+				margin: 2rem 0;
+			}
+			
+			.mission-statement h4 {
+				font-size: 1.3rem;
+				margin-bottom: 1rem;
+				text-transform: uppercase;
+			}
+			
+			.mission-statement p {
+				color: var(--black);
+				font-weight: 600;
+			}
+			
+			.about-image {
+				position: relative;
+				text-align: center;
+			}
+			
+			.about-image img {
+				max-width: 100%;
+				border-radius: 0;
+				box-shadow: 0 0 0;
+				border: 2px solid var(--primary-color);
+			}
+			
+			.image-overlay {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: rgba(0, 0, 0, 0.8);
+				padding: 1.5rem;
+			}
+			
+			.stats {
+				display: flex;
+				justify-content: space-around;
+				gap: 2rem;
+			}
+			
+			.stat {
+				text-align: center;
+			}
+			
+			.stat .number {
+				display: block;
+				font-size: 2rem;
+				font-weight: 900;
+				color: var(--primary-color);
+			}
+			
+			.stat .label {
+				font-size: 0.9rem;
+				color: var(--text-light);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.services-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+				gap: 40px;
+				margin-top: 4rem;
+			}
+			
+			.service-card {
+				background: var(--bg-light);
+				padding: 50px 40px;
+				border-radius: 0;
+				text-align: center;
+				border: 2px solid var(--primary-color);
+				transition: all 0.3s ease;
+			}
+			
+			.service-card:hover {
+				background: var(--primary-color);
+				color: var(--black);
+				transform: translateY(-5px);
+			}
+			
+			.service-card h3 {
+				font-size: 1.8rem;
+				margin-bottom: 1.5rem;
+				color: var(--primary-color);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.service-card:hover h3 {
+				color: var(--black);
+			}
+			
+			.service-card .price {
+				font-size: 2.2rem;
+				font-weight: 900;
+				color: var(--white);
+				margin: 2rem 0;
+				text-transform: uppercase;
+			}
+			
+			.service-card:hover .price {
+				color: var(--black);
+			}
+			
+			.programs-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 40px;
+				margin-top: 4rem;
+			}
+			
+			.program-card {
+				background: var(--bg-light);
+				padding: 40px 30px;
+				border-radius: 0;
+				text-align: center;
+				border: 1px solid var(--primary-color);
+				transition: all 0.3s ease;
+			}
+			
+			.program-card:hover {
+				background: var(--primary-color);
+				color: var(--black);
+			}
+			
+			.program-card h4 {
+				font-size: 1.5rem;
+				margin-bottom: 1.5rem;
+				color: var(--primary-color);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.program-card:hover h4 {
+				color: var(--black);
+			}
+			
+			.gallery {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 20px;
+				margin-top: 4rem;
+			}
+			
+			.gallery img {
+				width: 100%;
+				height: 250px;
+				object-fit: cover;
+				border-radius: 0;
+				transition: all 0.3s ease;
+				border: 2px solid var(--primary-color);
+			}
+			
+			.gallery img:hover {
+				transform: scale(1.02);
+				border-color: var(--white);
+			}
+			
+			.contact-section {
+				background: var(--black);
+				color: var(--white);
+				text-align: center;
+			}
+			
+			.contact-section h2 {
+				color: var(--white);
+			}
+			
+			.contact-subtitle {
+				font-size: 1.3rem;
+				margin-bottom: 3rem;
+				color: var(--text-light);
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			.contact-methods {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 2rem;
+				margin: 3rem 0;
+			}
+			
+			.contact-card {
+				background: var(--bg-light);
+				padding: 2.5rem 2rem;
+				border: 2px solid var(--primary-color);
+				text-align: center;
+				transition: all 0.3s ease;
+			}
+			
+			.contact-card:hover {
+				background: var(--primary-color);
+				color: var(--black);
+				transform: translateY(-5px);
+			}
+			
+			.contact-icon {
+				font-size: 3rem;
+				margin-bottom: 1rem;
+			}
+			
+			.contact-card h3 {
+				font-size: 1.5rem;
+				margin-bottom: 1rem;
+				color: var(--primary-color);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.contact-card:hover h3 {
+				color: var(--black);
+			}
+			
+			.contact-card p {
+				margin-bottom: 1.5rem;
+				color: var(--text-light);
+			}
+			
+			.contact-card:hover p {
+				color: var(--black);
+			}
+			
+			.whatsapp-btn, .email-btn, .instagram-btn, .youtube-btn, .linkedin-btn {
+				background: var(--primary-color);
+				color: var(--black);
+				padding: 15px 30px;
+				font-size: 1rem;
+				border-radius: 0;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				font-weight: 700;
+				text-decoration: none;
+				display: inline-block;
+				transition: all 0.3s ease;
+				border: none;
+			}
+			
+			.whatsapp-btn:hover, .email-btn:hover, .instagram-btn:hover, .youtube-btn:hover, .linkedin-btn:hover {
+				background: var(--white);
+				transform: translateY(-2px);
+			}
+			
+			.benefits-section {
+				margin-top: 4rem;
+				padding-top: 3rem;
+				border-top: 1px solid var(--primary-color);
+			}
+			
+			.benefits-section h3 {
+				font-size: 2rem;
+				margin-bottom: 2rem;
+				color: var(--primary-color);
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+			
+			.benefits-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 1.5rem;
+				margin-top: 2rem;
+			}
+			
+			.benefit {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				padding: 1rem;
+				background: var(--bg-light);
+				border: 1px solid var(--primary-color);
+			}
+			
+			.benefit-icon {
+				font-size: 1.5rem;
+				color: var(--primary-color);
+			}
+			
+			.benefit span:last-child {
+				color: var(--text-light);
+				font-size: 1.1rem;
+			}
+			
+			.promo-section {
+				background: var(--primary-color);
+				color: var(--black);
+				padding: 60px 0;
+				text-align: center;
+				margin: 4rem 0;
+			}
+			
+			.promo-section h3 {
+				font-size: 2rem;
+				margin-bottom: 1rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				font-weight: 900;
+			}
+			
+			.promo-section p {
+				font-size: 1.3rem;
+				font-weight: 600;
+			}
+			
+			@media (max-width: 768px) {
+				.hero h1 {
+					font-size: 2.5rem;
+				}
+				
+				.hero .subtitle {
+					font-size: 1.1rem;
+				}
+				
+				.about-grid {
+					grid-template-columns: 1fr;
+					gap: 50px;
+				}
+				
+				.cta-buttons {
+					flex-direction: column;
+					align-items: center;
+				}
+				
+				.btn {
+					width: 100%;
+					max-width: 350px;
+				}
+				
+				.section h2 {
+					font-size: 2rem;
+				}
+				
+				.services-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
+		
+		<!-- Hero Section -->
+		<section class="hero">
+			<img src="/img/album/01.jpg" alt="Entrenamiento personalizado" class="hero-image" />
+			<div class="hero-overlay"></div>
+			<div class="hero-content">
+				<h1>Transforma tu cuerpo y mente</h1>
+				<p class="subtitle">Entrenamiento personalizado con {TRAINER_NAME}</p>
+				
+				<div class="cta-buttons">
+					<a href={`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=Hola Jernie, me interesa agendar mi clase GRATIS`} class="btn btn-primary">
+						Agenda tu clase GRATIS
+					</a>
+					<a href="#servicios" class="btn btn-secondary">
+						Ver planes
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- About Section -->
+		<section id="about" class="section">
+			<div class="container">
+				<h2>Conoce a Jernie</h2>
+				<div class="about-grid">
+					<div class="about-text">
+						<div class="about-content">
+							<h3>Mi Historia</h3>
+							<p>Mi nombre es <strong>{TRAINER_NAME}</strong>, tengo {TRAINER_AGE}, soy {TRAINER_ORIGIN} pero vivo actualmente en {TRAINER_LOCATION}.</p>
+							<p>Soy entrenadora fitness y tengo varios <strong>certificados en nutrición</strong> obtenidos en Barcelona.</p>
+							<p>Desde mis 15/16 años, el deporte y el fitness han sido parte integral de mi vida y con el paso de los años he transformado esta pasión en mi carrera, ayudando a personas de todo el mundo a alcanzar sus objetivos de salud y bienestar.</p>
+							
+							<div class="credentials">
+								<h4>Mis Credenciales</h4>
+								<ul>
+									<li>✅ Certificados en Nutrición (Barcelona)</li>
+									<li>✅ {EXPERIENCE_YEARS} de experiencia en fitness</li>
+									<li>✅ Entrenadora personal certificada</li>
+									<li>✅ Especialista en transformación corporal</li>
+								</ul>
+							</div>
+							
+							<div class="mission-statement">
+								<h4>Mi Misión</h4>
+								<p><strong>¿Quieres sentirte más fuerte, con energía y lograr resultados reales sin excusas?</strong></p>
+								<p>Te ayudo a transformar tu cuerpo y mente con un enfoque realista, motivador y progresivo.</p>
+							</div>
+						</div>
+					</div>
+					<div class="about-image">
+						<img src="/img/portrait/01.jpg" alt="Jernie Richard - Entrenadora Personal" />
+						<div class="image-overlay">
+							<div class="stats">
+								<div class="stat">
+									<span class="number">{EXPERIENCE_YEARS}</span>
+									<span class="label">Años de experiencia</span>
+								</div>
+								<div class="stat">
+									<span class="number">100+</span>
+									<span class="label">Clientes transformados</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Services Section -->
+		<section id="servicios" class="section section-alt">
+			<div class="container">
+				<h2>📦 Opciones de paquetes</h2>
+				<div class="services-grid">
+					<div class="service-card">
+						<h3>🎯 Plan Mensual Online</h3>
+						<p>4 clases en vivo por videollamada + seguimiento</p>
+						<p><strong>BONUS:</strong> rutinas grabadas + control de progreso</p>
+						<div class="price">$[tu precio]</div>
+					</div>
+					
+					<div class="service-card">
+						<h3>🏋️‍♀️ Entrenamiento Presencial Individual</h3>
+						<p>Sesiones 1 a 1 en tu casa o espacio al aire libre</p>
+						<div class="price">$[precio por clase]</div>
+					</div>
+					
+					<div class="service-card">
+						<h3>👭 Clases Grupales (2 a 4 personas)</h3>
+						<p>Ideal para entrenar con amigas, compartir energía y dividir el costo</p>
+						<div class="price">$[precio grupal]</div>
+					</div>
+				</div>
+				
+				<div class="promo-section">
+					<h3>🎁 PROMO DE MES</h3>
+					<p>Primera clase de prueba GRATIS para que veas cómo trabajo y si encajamos bien 💬</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Programs Section -->
+		<section class="section">
+			<div class="container">
+				<h2>💪 Mis programas personalizados incluyen</h2>
+				<div class="programs-grid">
+					<div class="program-card">
+						<h4>Entrenamiento de fuerza</h4>
+						<p>Para desarrollar masa muscular y tonificación</p>
+					</div>
+					<div class="program-card">
+						<h4>Programas de pérdida de peso y tonificación</h4>
+						<p>Centrados en quemar grasa de manera eficiente</p>
+					</div>
+					<div class="program-card">
+						<h4>Entrenamiento de resistencia</h4>
+						<p>Para mejorar la capacidad cardiovascular y aumentar la energía diaria</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Gallery Section -->
+		<section class="section section-alt">
+			<div class="container">
+				<h2>📸 Galería de entrenamientos</h2>
+				<div class="gallery">
+					<img src="/img/album/01.jpg" alt="Entrenamiento personalizado" />
+					<img src="/img/album/02.jpg" alt="Rutinas de fuerza" />
+					<img src="/img/album/03.jpg" alt="Cardio y tonificación" />
+					<img src="/img/album/04.jpg" alt="Entrenamiento grupal" />
+					<img src="/img/album/05.jpg" alt="Resultados de clientes" />
+				</div>
+			</div>
+		</section>
+
+		<!-- Contact Section -->
+		<section id="contact" class="section contact-section">
+			<div class="container">
+				<h2>¡Empecemos tu transformación!</h2>
+				<p class="contact-subtitle">Escribime para agendar tu clase o consultarme lo que necesites. ¡Estoy para ayudarte a dar el primer paso!</p>
+				
+				<div class="contact-methods">
+					<div class="contact-card">
+						<div class="contact-icon">💬</div>
+						<h3>WhatsApp</h3>
+						<p>Respuesta rápida y personalizada</p>
+						<a href={`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=Hola Jernie, me interesa comenzar mi transformación fitness`} class="btn whatsapp-btn">
+							Contactar por WhatsApp
+						</a>
+					</div>
+					
+					<div class="contact-card">
+						<div class="contact-icon">📧</div>
+						<h3>Email</h3>
+						<p>Para consultas detalladas</p>
+						<a href="mailto:jernie@jerniefit.com" class="btn email-btn">
+							Enviar Email
+						</a>
+					</div>
+					
+					<div class="contact-card">
+						<div class="contact-icon">📱</div>
+						<h3>Instagram</h3>
+						<p>Sígueme para tips diarios</p>
+						<a href="https://www.instagram.com/jerniefit" target="_blank" class="btn instagram-btn">
+							@jerniefit
+						</a>
+					</div>
+					
+					<div class="contact-card">
+						<div class="contact-icon">📺</div>
+						<h3>YouTube</h3>
+						<p>Rutinas y consejos en video</p>
+						<a href="https://www.youtube.com/@jerniefit" target="_blank" class="btn youtube-btn">
+							Ver Canal
+						</a>
+					</div>
+					
+					<div class="contact-card">
+						<div class="contact-icon">💼</div>
+						<h3>LinkedIn</h3>
+						<p>Conecta profesionalmente</p>
+						<a href="https://www.linkedin.com/in/jernie-richard-49b237370" target="_blank" class="btn linkedin-btn">
+							Conectar
+						</a>
+					</div>
+				</div>
+				
+				<div class="benefits-section">
+					<h3>¿Qué obtienes conmigo?</h3>
+					<div class="benefits-grid">
+						<div class="benefit">
+							<span class="benefit-icon">✅</span>
+							<span>Planes de entrenamiento personalizados (presencial u online)</span>
+						</div>
+						<div class="benefit">
+							<span class="benefit-icon">✅</span>
+							<span>Acompañamiento constante vía WhatsApp</span>
+						</div>
+						<div class="benefit">
+							<span class="benefit-icon">✅</span>
+							<span>Adaptado a tu nivel, tus horarios y objetivos</span>
+						</div>
+						<div class="benefit">
+							<span class="benefit-icon">✅</span>
+							<span>Resultados visibles si entrenás con constancia 💥</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
 		<Footer />
+		
+		<script>
+			// Smooth scrolling for navigation links
+			document.addEventListener('DOMContentLoaded', function() {
+				// Get all navigation links
+				const navLinks = document.querySelectorAll('a[href^="#"]');
+				
+				// Add smooth scrolling to all navigation links
+				navLinks.forEach(link => {
+					link.addEventListener('click', function(e) {
+						e.preventDefault();
+						
+						const targetId = this.getAttribute('href');
+						const targetSection = document.querySelector(targetId);
+						
+						if (targetSection) {
+							const headerHeight = 80; // Height of fixed header
+							const targetPosition = targetSection.offsetTop - headerHeight;
+							
+							window.scrollTo({
+								top: targetPosition,
+								behavior: 'smooth'
+							});
+						}
+					});
+				});
+				
+				// Active section detection
+				const sections = document.querySelectorAll('section[id]');
+				const navItems = document.querySelectorAll('.nav-links a');
+				
+				function updateActiveNav() {
+					let current = '';
+					
+					sections.forEach(section => {
+						const sectionTop = section.offsetTop - 100; // Offset for header
+						const sectionHeight = section.offsetHeight;
+						
+						if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+							current = section.getAttribute('id');
+						}
+					});
+					
+					// Update active nav item
+					navItems.forEach(item => {
+						item.classList.remove('active');
+						if (item.getAttribute('href') === `#${current}`) {
+							item.classList.add('active');
+						}
+					});
+				}
+				
+				
+				// Throttle function for better performance
+				function throttle(func, limit) {
+					let inThrottle;
+					return function() {
+						const args = arguments;
+						const context = this;
+						if (!inThrottle) {
+							func.apply(context, args);
+							inThrottle = true;
+							setTimeout(() => inThrottle = false, limit);
+						}
+					}
+				}
+				
+				// Listen for scroll events with throttling
+				const throttledScroll = throttle(function() {
+					updateActiveNav();
+				}, 16); // ~60fps
+				
+				window.addEventListener('scroll', throttledScroll);
+				
+				// Initial call
+				updateActiveNav();
+			});
+		</script>
 	</body>
 </html>
