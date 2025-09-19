@@ -12,8 +12,8 @@ export const TRAINER_ORIGIN = "Dominicana";
 export const EXPERIENCE_YEARS = "15+ años";
 
 // Contact information
-export const WHATSAPP_NUMBER = "+34-XXX-XXX-XXX"; // Update with real number
-export const EMAIL = "jernie@jerniefit.com"; // Update with real email
+export const WHATSAPP_NUMBER = "+34-695-25-10-13"; // Update with real number
+export const EMAIL = "Jerniepierre08@gmail.com"; // Update with real email
 
 // Social media
 export const INSTAGRAM = "https://www.instagram.com/jerniefit";
