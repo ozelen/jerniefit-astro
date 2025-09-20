@@ -482,6 +482,134 @@
   }
 }
 
+/* Success Message */
+.success-message {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: successBounce 0.6s ease-out;
+}
+
+@keyframes successBounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-message h2 {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.success-message p {
+  color: #cccccc;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.success-message strong {
+  color: #ff1493;
+  font-weight: 700;
+}
+
+.whatsapp-cta {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: linear-gradient(145deg, #2a1a2a, #1a0a1a);
+  border-radius: 12px;
+  border: 1px solid #ff1493;
+}
+
+.whatsapp-cta h3 {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.whatsapp-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #ffffff;
+  padding: 16px 32px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.whatsapp-button:hover {
+  background: linear-gradient(135deg, #128C7E, #25D366);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-button svg {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Mobile Responsive for Success Message */
+@media (max-width: 768px) {
+  .success-message {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+  }
+
+  .success-message h2 {
+    font-size: 1.5rem;
+  }
+
+  .success-message p {
+    font-size: 1rem;
+  }
+
+  .whatsapp-cta {
+    padding: 1.5rem;
+  }
+
+  .whatsapp-cta h3 {
+    font-size: 1.1rem;
+  }
+
+  .whatsapp-button {
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .assessment-form-container {
