@@ -226,7 +226,7 @@ import Footer from '../components/Footer.astro';
 				try {
 					container.innerHTML = '<div class="loading">Cargando evaluaciones...</div>';
 					
-					const response = await fetch('https://jerniefit-client-assessment.o-497.workers.dev/api/assessments');
+					const response = await fetch('https://jerniefit-client-assessment-api.o-497.workers.dev/api/assessments');
 					
 					if (!response.ok) {
 						throw new Error('Error al cargar las evaluaciones');

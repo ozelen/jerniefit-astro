@@ -894,7 +894,7 @@
 				if (data.altura) data.altura = parseInt(data.altura);
 				if (data.pesoActual) data.pesoActual = parseFloat(data.pesoActual);
 				
-				const response = await fetch('https://jerniefit-client-assessment.o-497.workers.dev/api/submit-assessment', {
+				const response = await fetch('https://jerniefit-client-assessment-api.o-497.workers.dev/api/submit-assessment', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
