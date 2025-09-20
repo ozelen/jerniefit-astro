@@ -1,0 +1,925 @@
+---
+// Assessment Form Component - Direct integration without iframe
+---
+
+<div id="assessment-form-container">
+	<div class="form-header">
+		<h1>📋 Formulario de Evaluación Personal</h1>
+		<p>Completa este formulario para que Jernie pueda crear tu plan de entrenamiento personalizado</p>
+	</div>
+
+	<form id="assessment-form" class="assessment-form">
+		<!-- Datos Personales -->
+		<section class="form-section">
+			<h2>1. Datos Personales</h2>
+			
+			<div class="form-group">
+				<label for="nombreCompleto">Nombre completo *</label>
+				<input type="text" id="nombreCompleto" name="nombreCompleto" required placeholder="Tu nombre completo">
+				<span class="error" id="error-nombreCompleto"></span>
+			</div>
+
+			<div class="form-row">
+				<div class="form-group">
+					<label for="edad">Edad *</label>
+					<input type="number" id="edad" name="edad" min="16" max="100" required>
+					<span class="error" id="error-edad"></span>
+				</div>
+
+				<div class="form-group">
+					<label for="altura">Altura (cm) *</label>
+					<input type="number" id="altura" name="altura" min="100" max="250" required>
+					<span class="error" id="error-altura"></span>
+				</div>
+
+				<div class="form-group">
+					<label for="pesoActual">Peso actual (kg)</label>
+					<input type="number" id="pesoActual" name="pesoActual" min="30" max="300" step="0.1">
+					<span class="error" id="error-pesoActual"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>¿Te sientes cómoda pesándote regularmente? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="seSienteComodaPesandose" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="seSienteComodaPesandose" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-seSienteComodaPesandose"></span>
+			</div>
+		</section>
+
+		<!-- Salud y Antecedentes Médicos -->
+		<section class="form-section">
+			<h2>2. Salud y Antecedentes Médicos</h2>
+			
+			<div class="form-group">
+				<label>¿Tienes alguna condición médica diagnosticada? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="tieneCondicionMedica" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tieneCondicionMedica" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-tieneCondicionMedica"></span>
+			</div>
+
+			<div class="form-group" id="condicionMedicaGroup" style="display: none;">
+				<label for="condicionMedicaDetalle">Especifica la condición médica</label>
+				<textarea id="condicionMedicaDetalle" name="condicionMedicaDetalle" rows="3" placeholder="Anemia, deficiencia de vitaminas, lesiones, etc."></textarea>
+				<span class="error" id="error-condicionMedicaDetalle"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Tomas alguna medicación o suplemento actualmente? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="tomaMedicacion" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tomaMedicacion" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-tomaMedicacion"></span>
+			</div>
+
+			<div class="form-group" id="medicacionGroup" style="display: none;">
+				<label for="medicacionDetalle">¿Cuáles?</label>
+				<textarea id="medicacionDetalle" name="medicacionDetalle" rows="3" placeholder="Lista de medicamentos y suplementos"></textarea>
+				<span class="error" id="error-medicacionDetalle"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Has tenido lesiones recientes o molestias físicas? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="tieneLesiones" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tieneLesiones" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-tieneLesiones"></span>
+			</div>
+
+			<div class="form-group" id="lesionesGroup" style="display: none;">
+				<label for="lesionesDetalle">¿Dónde?</label>
+				<textarea id="lesionesDetalle" name="lesionesDetalle" rows="3" placeholder="Describe las lesiones o molestias"></textarea>
+				<span class="error" id="error-lesionesDetalle"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Tienes prescripción médica que limite tu actividad física? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="tienePrescripcionMedica" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tienePrescripcionMedica" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-tienePrescripcionMedica"></span>
+			</div>
+		</section>
+
+		<!-- Hábitos y Estilo de Vida -->
+		<section class="form-section">
+			<h2>3. Hábitos y Estilo de Vida</h2>
+			
+			<div class="form-group">
+				<label>¿Trabajas actualmente? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="trabaja" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="trabaja" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-trabaja"></span>
+			</div>
+
+			<div class="form-group" id="trabajoGroup" style="display: none;">
+				<label for="areaTrabajo">¿En qué área?</label>
+				<input type="text" id="areaTrabajo" name="areaTrabajo" placeholder="Tu área de trabajo">
+				<span class="error" id="error-areaTrabajo"></span>
+			</div>
+
+			<div class="form-group" id="horarioGroup" style="display: none;">
+				<label for="horarioLaboral">¿Cuál es tu horario laboral?</label>
+				<input type="text" id="horarioLaboral" name="horarioLaboral" placeholder="Ej: 9:00 - 18:00">
+				<span class="error" id="error-horarioLaboral"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Qué días tienes disponibilidad para entrenar? *</label>
+				<div class="checkbox-group">
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Lunes">
+						Lunes
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Martes">
+						Martes
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Miércoles">
+						Miércoles
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Jueves">
+						Jueves
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Viernes">
+						Viernes
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Sábado">
+						Sábado
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="disponibilidadDias" value="Domingo">
+						Domingo
+					</label>
+				</div>
+				<span class="error" id="error-disponibilidadDias"></span>
+			</div>
+
+			<div class="form-group">
+				<label for="horariosPreferidos">Horarios preferidos *</label>
+				<input type="text" id="horariosPreferidos" name="horariosPreferidos" required placeholder="Ej: Mañana temprano, después del trabajo, etc.">
+				<span class="error" id="error-horariosPreferidos"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Has hecho ejercicio anteriormente? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="haHechoEjercicio" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="haHechoEjercicio" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-haHechoEjercicio"></span>
+			</div>
+
+			<div class="form-group" id="ejercicioGroup" style="display: none;">
+				<label for="tipoEjercicio">¿Qué tipo?</label>
+				<input type="text" id="tipoEjercicio" name="tipoEjercicio" placeholder="Gimnasio, running, yoga, etc.">
+				<span class="error" id="error-tipoEjercicio"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Con qué frecuencia hacías ejercicio antes? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="frecuenciaEjercicio" value="Nunca" required>
+						Nunca
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="frecuenciaEjercicio" value="1-2 veces/semana" required>
+						1-2 veces/semana
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="frecuenciaEjercicio" value="3-4 veces/semana" required>
+						3-4 veces/semana
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="frecuenciaEjercicio" value="5+ veces/semana" required>
+						5+ veces/semana
+					</label>
+				</div>
+				<span class="error" id="error-frecuenciaEjercicio"></span>
+			</div>
+		</section>
+
+		<!-- Objetivos -->
+		<section class="form-section">
+			<h2>4. Objetivos</h2>
+			
+			<div class="form-group">
+				<label>¿Cuál es tu objetivo principal? (puedes elegir más de uno) *</label>
+				<div class="checkbox-group">
+					<label class="checkbox-label">
+						<input type="checkbox" name="objetivos" value="Pérdida de peso">
+						Pérdida de peso
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="objetivos" value="Aumentar masa muscular">
+						Aumentar masa muscular
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="objetivos" value="Tonificar">
+						Tonificar
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="objetivos" value="Mejorar salud general">
+						Mejorar salud general
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="objetivos" value="Reducir dolores o molestias">
+						Reducir dolores o molestias
+					</label>
+					<label class="checkbox-label">
+						<input type="checkbox" name="objetivos" value="otro">
+						Otro
+					</label>
+				</div>
+				<span class="error" id="error-objetivos"></span>
+			</div>
+
+			<div class="form-group" id="objetivoOtroGroup" style="display: none;">
+				<label for="objetivoOtro">Especifica el otro objetivo</label>
+				<input type="text" id="objetivoOtro" name="objetivoOtro" placeholder="Describe tu objetivo específico">
+				<span class="error" id="error-objetivoOtro"></span>
+			</div>
+
+			<div class="form-group">
+				<label for="metaEspecifica">¿Tienes una meta específica o fecha límite?</label>
+				<textarea id="metaEspecifica" name="metaEspecifica" rows="3" placeholder="Ej: Perder 10kg para el verano, correr 5km sin parar, etc."></textarea>
+			</div>
+		</section>
+
+		<!-- Preferencias -->
+		<section class="form-section">
+			<h2>5. Preferencias</h2>
+			
+			<div class="form-group">
+				<label>¿Te gustaría entrenar en la mañana, tarde o noche? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="horarioPreferido" value="Mañana" required>
+						Mañana
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="horarioPreferido" value="Tarde" required>
+						Tarde
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="horarioPreferido" value="Noche" required>
+						Noche
+					</label>
+				</div>
+				<span class="error" id="error-horarioPreferido"></span>
+			</div>
+
+			<div class="form-group">
+				<label>¿Prefieres entrenar en casa o en el gimnasio? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="lugarPreferido" value="Casa" required>
+						Casa
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="lugarPreferido" value="Gimnasio" required>
+						Gimnasio
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="lugarPreferido" value="Ambos" required>
+						Ambos
+					</label>
+				</div>
+				<span class="error" id="error-lugarPreferido"></span>
+			</div>
+
+			<div class="form-group">
+				<label for="ejerciciosNoGustan">¿Hay ejercicios o actividades que no te gustan?</label>
+				<textarea id="ejerciciosNoGustan" name="ejerciciosNoGustan" rows="3" placeholder="Ej: Correr, sentadillas, etc."></textarea>
+			</div>
+
+			<div class="form-group">
+				<label>¿Te gustaría que te mida con fotos, medidas corporales o solo sensaciones? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="tipoMedicion" value="Fotos" required>
+						Fotos
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tipoMedicion" value="Medidas (cm)" required>
+						Medidas (cm)
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tipoMedicion" value="Sensaciones / ropa" required>
+						Sensaciones / ropa
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tipoMedicion" value="Todo" required>
+						Todo
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tipoMedicion" value="Prefiero no medir nada" required>
+						Prefiero no medir nada
+					</label>
+				</div>
+				<span class="error" id="error-tipoMedicion"></span>
+			</div>
+		</section>
+
+		<!-- Alimentación -->
+		<section class="form-section">
+			<h2>6. Alimentación</h2>
+			
+			<div class="form-group">
+				<label>¿Sigues algún tipo de alimentación específica? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="sigueAlimentacionEspecifica" value="true" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="sigueAlimentacionEspecifica" value="false" required>
+						No
+					</label>
+				</div>
+				<span class="error" id="error-sigueAlimentacionEspecifica"></span>
+			</div>
+
+			<div class="form-group" id="alimentacionGroup" style="display: none;">
+				<label for="tipoAlimentacion">¿Cuál?</label>
+				<input type="text" id="tipoAlimentacion" name="tipoAlimentacion" placeholder="Vegetariana, vegana, keto, etc.">
+				<span class="error" id="error-tipoAlimentacion"></span>
+			</div>
+
+			<div class="form-group">
+				<label for="alimentosNoGustan">¿Hay alimentos que no te gustan o no consumes?</label>
+				<textarea id="alimentosNoGustan" name="alimentosNoGustan" rows="3" placeholder="Lista de alimentos que no te gustan o no consumes"></textarea>
+			</div>
+
+			<div class="form-group">
+				<label>¿Tomas suficiente agua a diario? *</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="tomaSuficienteAgua" value="Sí" required>
+						Sí
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tomaSuficienteAgua" value="No" required>
+						No
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="tomaSuficienteAgua" value="No estoy segura" required>
+						No estoy segura
+					</label>
+				</div>
+				<span class="error" id="error-tomaSuficienteAgua"></span>
+			</div>
+		</section>
+
+		<!-- Otros Detalles -->
+		<section class="form-section">
+			<h2>7. Otros Detalles Importantes</h2>
+			
+			<div class="form-group">
+				<label for="otrosDetalles">¿Hay algo que deba saber para adaptar mejor tu entrenamiento?</label>
+				<textarea id="otrosDetalles" name="otrosDetalles" rows="4" placeholder="Cualquier información adicional que consideres importante..."></textarea>
+			</div>
+		</section>
+
+		<div class="form-actions">
+			<button type="submit" id="submit-btn" class="submit-button">
+				Enviar Formulario
+			</button>
+		</div>
+	</form>
+</div>
+
+<style>
+	/* Assessment Form Styles */
+	#assessment-form-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 20px;
+		font-family: 'Arial', 'Helvetica', sans-serif;
+		background: #000000;
+		color: #ffffff;
+	}
+
+	.form-header {
+		text-align: center;
+		margin-bottom: 40px;
+		padding: 40px 20px;
+		background: linear-gradient(135deg, rgba(255, 20, 147, 0.2), rgba(0, 0, 0, 0.8));
+		border: 2px solid #ff1493;
+	}
+
+	.form-header h1 {
+		font-size: 2.5rem;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		color: #ff1493;
+		margin-bottom: 1rem;
+	}
+
+	.form-header p {
+		font-size: 1.2rem;
+		color: #cccccc;
+		line-height: 1.6;
+	}
+
+	.assessment-form {
+		background: #111111;
+		padding: 40px;
+		border: 1px solid #ff1493;
+	}
+
+	.form-section {
+		margin-bottom: 50px;
+		padding-bottom: 30px;
+		border-bottom: 1px solid #333333;
+	}
+
+	.form-section:last-of-type {
+		border-bottom: none;
+	}
+
+	.form-section h2 {
+		font-size: 1.8rem;
+		color: #ff1493;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-bottom: 30px;
+		font-weight: 700;
+	}
+
+	.form-group {
+		margin-bottom: 25px;
+	}
+
+	.form-row {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 20px;
+	}
+
+	.form-group label {
+		display: block;
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: #ffffff;
+		margin-bottom: 8px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	.form-group input,
+	.form-group textarea,
+	.form-group select {
+		width: 100%;
+		padding: 15px;
+		font-size: 1rem;
+		background: #000000;
+		border: 2px solid #333333;
+		color: #ffffff;
+		border-radius: 0;
+		transition: border-color 0.3s ease;
+		font-family: inherit;
+		box-sizing: border-box;
+	}
+
+	.form-group input:focus,
+	.form-group textarea:focus,
+	.form-group select:focus {
+		outline: none;
+		border-color: #ff1493;
+		box-shadow: 0 0 0 2px rgba(255, 20, 147, 0.2);
+	}
+
+	.form-group input::placeholder,
+	.form-group textarea::placeholder {
+		color: #666666;
+	}
+
+	.radio-group,
+	.checkbox-group {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		margin-top: 10px;
+	}
+
+	.radio-label,
+	.checkbox-label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 1rem;
+		font-weight: 500;
+		color: #cccccc;
+		text-transform: none;
+		letter-spacing: normal;
+		cursor: pointer;
+		transition: color 0.3s ease;
+	}
+
+	.radio-label:hover,
+	.checkbox-label:hover {
+		color: #ff1493;
+	}
+
+	.radio-label input[type="radio"],
+	.checkbox-label input[type="checkbox"] {
+		width: auto;
+		margin: 0;
+		accent-color: #ff1493;
+	}
+
+	.error {
+		display: block;
+		color: #ff6b6b;
+		font-size: 0.9rem;
+		margin-top: 5px;
+		font-weight: 500;
+	}
+
+	.form-actions {
+		text-align: center;
+		margin-top: 50px;
+		padding-top: 30px;
+		border-top: 1px solid #333333;
+	}
+
+	.submit-button {
+		background: #ff1493;
+		color: #ffffff;
+		border: none;
+		padding: 20px 50px;
+		font-size: 1.2rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		border-radius: 0;
+		min-width: 250px;
+	}
+
+	.submit-button:hover:not(:disabled) {
+		background: #ffffff;
+		color: #ff1493;
+		transform: translateY(-2px);
+	}
+
+	.submit-button:disabled {
+		background: #666666;
+		cursor: not-allowed;
+		transform: none;
+	}
+
+	/* Responsive Design */
+	@media (max-width: 768px) {
+		#assessment-form-container {
+			padding: 10px;
+		}
+		
+		.form-header {
+			padding: 20px 10px;
+		}
+		
+		.form-header h1 {
+			font-size: 2rem;
+		}
+		
+		.assessment-form {
+			padding: 20px;
+		}
+		
+		.form-section h2 {
+			font-size: 1.5rem;
+		}
+		
+		.form-row {
+			grid-template-columns: 1fr;
+		}
+		
+		.radio-group,
+		.checkbox-group {
+			flex-direction: column;
+			gap: 10px;
+		}
+		
+		.submit-button {
+			width: 100%;
+			min-width: auto;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.form-header h1 {
+			font-size: 1.5rem;
+		}
+		
+		.form-header p {
+			font-size: 1rem;
+		}
+		
+		.form-group input,
+		.form-group textarea,
+		.form-group select {
+			padding: 12px;
+		}
+		
+		.submit-button {
+			padding: 15px 30px;
+			font-size: 1rem;
+		}
+	}
+</style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const form = document.getElementById('assessment-form');
+		const submitBtn = document.getElementById('submit-btn');
+		
+		// Show/hide conditional fields
+		function toggleConditionalFields() {
+			// Medical condition
+			const tieneCondicion = document.querySelector('input[name="tieneCondicionMedica"]:checked');
+			const condicionGroup = document.getElementById('condicionMedicaGroup');
+			if (tieneCondicion && tieneCondicion.value === 'true') {
+				condicionGroup.style.display = 'block';
+			} else {
+				condicionGroup.style.display = 'none';
+			}
+			
+			// Medication
+			const tomaMedicacion = document.querySelector('input[name="tomaMedicacion"]:checked');
+			const medicacionGroup = document.getElementById('medicacionGroup');
+			if (tomaMedicacion && tomaMedicacion.value === 'true') {
+				medicacionGroup.style.display = 'block';
+			} else {
+				medicacionGroup.style.display = 'none';
+			}
+			
+			// Injuries
+			const tieneLesiones = document.querySelector('input[name="tieneLesiones"]:checked');
+			const lesionesGroup = document.getElementById('lesionesGroup');
+			if (tieneLesiones && tieneLesiones.value === 'true') {
+				lesionesGroup.style.display = 'block';
+			} else {
+				lesionesGroup.style.display = 'none';
+			}
+			
+			// Work
+			const trabaja = document.querySelector('input[name="trabaja"]:checked');
+			const trabajoGroup = document.getElementById('trabajoGroup');
+			const horarioGroup = document.getElementById('horarioGroup');
+			if (trabaja && trabaja.value === 'true') {
+				trabajoGroup.style.display = 'block';
+				horarioGroup.style.display = 'block';
+			} else {
+				trabajoGroup.style.display = 'none';
+				horarioGroup.style.display = 'none';
+			}
+			
+			// Exercise history
+			const haHechoEjercicio = document.querySelector('input[name="haHechoEjercicio"]:checked');
+			const ejercicioGroup = document.getElementById('ejercicioGroup');
+			if (haHechoEjercicio && haHechoEjercicio.value === 'true') {
+				ejercicioGroup.style.display = 'block';
+			} else {
+				ejercicioGroup.style.display = 'none';
+			}
+			
+			// Other objectives
+			const objetivos = document.querySelectorAll('input[name="objetivos"]:checked');
+			const objetivoOtroGroup = document.getElementById('objetivoOtroGroup');
+			const hasOtro = Array.from(objetivos).some(obj => obj.value === 'otro');
+			if (hasOtro) {
+				objetivoOtroGroup.style.display = 'block';
+			} else {
+				objetivoOtroGroup.style.display = 'none';
+			}
+			
+			// Specific diet
+			const sigueAlimentacion = document.querySelector('input[name="sigueAlimentacionEspecifica"]:checked');
+			const alimentacionGroup = document.getElementById('alimentacionGroup');
+			if (sigueAlimentacion && sigueAlimentacion.value === 'true') {
+				alimentacionGroup.style.display = 'block';
+			} else {
+				alimentacionGroup.style.display = 'none';
+			}
+		}
+		
+		// Add event listeners for conditional fields
+		document.querySelectorAll('input[type="radio"]').forEach(input => {
+			input.addEventListener('change', toggleConditionalFields);
+		});
+		
+		document.querySelectorAll('input[name="objetivos"]').forEach(input => {
+			input.addEventListener('change', toggleConditionalFields);
+		});
+		
+		// Form validation
+		function validateForm() {
+			let isValid = true;
+			
+			// Clear previous errors
+			document.querySelectorAll('.error').forEach(error => {
+				error.textContent = '';
+			});
+			
+			// Required fields validation
+			const requiredFields = [
+				'nombreCompleto', 'edad', 'altura', 'seSienteComodaPesandose',
+				'tieneCondicionMedica', 'tomaMedicacion', 'tieneLesiones',
+				'tienePrescripcionMedica', 'trabaja', 'horariosPreferidos',
+				'haHechoEjercicio', 'frecuenciaEjercicio', 'horarioPreferido',
+				'lugarPreferido', 'tipoMedicion', 'sigueAlimentacionEspecifica',
+				'tomaSuficienteAgua'
+			];
+			
+			requiredFields.forEach(fieldName => {
+				const field = document.querySelector(`[name="${fieldName}"]`);
+				if (!field) return;
+				
+				if (field.type === 'radio') {
+					const checked = document.querySelector(`input[name="${fieldName}"]:checked`);
+					if (!checked) {
+						document.getElementById(`error-${fieldName}`).textContent = 'Este campo es requerido';
+						isValid = false;
+					}
+				} else if (field.type === 'checkbox') {
+					const checked = document.querySelectorAll(`input[name="${fieldName}"]:checked`);
+					if (checked.length === 0) {
+						document.getElementById(`error-${fieldName}`).textContent = 'Selecciona al menos una opción';
+						isValid = false;
+					}
+				} else {
+					if (!field.value.trim()) {
+						document.getElementById(`error-${fieldName}`).textContent = 'Este campo es requerido';
+						isValid = false;
+					}
+				}
+			});
+			
+			// Age validation
+			const edad = document.getElementById('edad');
+			if (edad.value && (parseInt(edad.value) < 16 || parseInt(edad.value) > 100)) {
+				document.getElementById('error-edad').textContent = 'La edad debe estar entre 16 y 100 años';
+				isValid = false;
+			}
+			
+			// Height validation
+			const altura = document.getElementById('altura');
+			if (altura.value && (parseInt(altura.value) < 100 || parseInt(altura.value) > 250)) {
+				document.getElementById('error-altura').textContent = 'La altura debe estar entre 100 y 250 cm';
+				isValid = false;
+			}
+			
+			// Weight validation
+			const peso = document.getElementById('pesoActual');
+			if (peso.value && (parseFloat(peso.value) < 30 || parseFloat(peso.value) > 300)) {
+				document.getElementById('error-pesoActual').textContent = 'El peso debe estar entre 30 y 300 kg';
+				isValid = false;
+			}
+			
+			return isValid;
+		}
+		
+		// Form submission
+		form.addEventListener('submit', async function(e) {
+			e.preventDefault();
+			
+			if (!validateForm()) {
+				return;
+			}
+			
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Enviando...';
+			
+			try {
+				// Collect form data
+				const formData = new FormData(form);
+				const data = {};
+				
+				// Process form data
+				for (let [key, value] of formData.entries()) {
+					if (data[key]) {
+						if (Array.isArray(data[key])) {
+							data[key].push(value);
+						} else {
+							data[key] = [data[key], value];
+						}
+					} else {
+						data[key] = value;
+					}
+				}
+				
+				// Convert boolean strings to actual booleans
+				const booleanFields = [
+					'seSienteComodaPesandose', 'tieneCondicionMedica', 'tomaMedicacion',
+					'tieneLesiones', 'tienePrescripcionMedica', 'trabaja', 'haHechoEjercicio',
+					'sigueAlimentacionEspecifica'
+				];
+				
+				booleanFields.forEach(field => {
+					if (data[field]) {
+						data[field] = data[field] === 'true';
+					}
+				});
+				
+				// Convert arrays to proper format
+				if (data.disponibilidadDias && !Array.isArray(data.disponibilidadDias)) {
+					data.disponibilidadDias = [data.disponibilidadDias];
+				}
+				if (data.objetivos && !Array.isArray(data.objetivos)) {
+					data.objetivos = [data.objetivos];
+				}
+				
+				// Convert numbers
+				if (data.edad) data.edad = parseInt(data.edad);
+				if (data.altura) data.altura = parseInt(data.altura);
+				if (data.pesoActual) data.pesoActual = parseFloat(data.pesoActual);
+				
+				const response = await fetch('https://jerniefit-client-assessment.o-497.workers.dev/api/submit-assessment', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				});
+				
+				if (response.ok) {
+					alert('¡Formulario enviado exitosamente! Jernie se pondrá en contacto contigo pronto.');
+					form.reset();
+					toggleConditionalFields();
+				} else {
+					throw new Error('Error al enviar el formulario');
+				}
+				
+			} catch (error) {
+				console.error('Error:', error);
+				alert('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'Enviar Formulario';
+			}
+		});
+		
+		// Initialize conditional fields
+		toggleConditionalFields();
+	});
+</script>

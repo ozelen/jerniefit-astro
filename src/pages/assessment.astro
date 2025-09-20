@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import AssessmentForm from '../components/AssessmentForm.astro';
 ---
 
 <!DOCTYPE html>
@@ -47,13 +48,6 @@ import Footer from '../components/Footer.astro';
 				line-height: 1.6;
 			}
 			
-			.assessment-iframe {
-				width: 100%;
-				height: 100vh;
-				border: none;
-				background: #000000;
-			}
-			
 			@media (max-width: 768px) {
 				.assessment-header h1 {
 					font-size: 2rem;
@@ -74,12 +68,7 @@ import Footer from '../components/Footer.astro';
 				<p>Completa este formulario detallado para que Jernie pueda crear tu plan de entrenamiento personalizado. Toda la información es confidencial y se utilizará únicamente para diseñar tu programa de fitness.</p>
 			</section>
 			
-			<iframe 
-				src="https://6ed1d804.jerniefit-client-assessment.pages.dev" 
-				class="assessment-iframe"
-				title="Formulario de Evaluación Personal JernieFit"
-				loading="lazy">
-			</iframe>
+			<AssessmentForm />
 		</main>
 		
 		<Footer />
