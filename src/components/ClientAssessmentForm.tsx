@@ -10,6 +10,10 @@ const validateForm = (data: FormData): Record<string, string> => {
   const errors: Record<string, string> = {};
   
   if (!data.nombreCompleto) errors.nombreCompleto = 'El nombre completo es requerido';
+  if (!data.email) errors.email = 'El email es requerido';
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'El email no es válido';
+  if (!data.telefono) errors.telefono = 'El teléfono es requerido';
+  if (data.telefono && !/^[\+]?[0-9\s\-\(\)]{9,}$/.test(data.telefono)) errors.telefono = 'El teléfono no es válido';
   if (!data.edad || data.edad < 16 || data.edad > 100) errors.edad = 'La edad debe estar entre 16 y 100 años';
   if (!data.altura || data.altura < 100 || data.altura > 250) errors.altura = 'La altura debe estar entre 100 y 250 cm';
   if (data.pesoActual && (data.pesoActual < 30 || data.pesoActual > 300)) errors.pesoActual = 'El peso debe estar entre 30 y 300 kg';
@@ -29,7 +33,7 @@ const validateForm = (data: FormData): Record<string, string> => {
 const validateStep = (step: number, data: FormData): boolean => {
   switch (step) {
     case 1: // Datos Personales
-      return !!(data.nombreCompleto && data.edad && data.altura);
+      return !!(data.nombreCompleto && data.email && data.telefono && data.edad && data.altura);
     case 2: // Salud y Antecedentes Médicos
       return !!(data.tieneCondicionMedica !== undefined && 
                 data.tomaMedicacion !== undefined && 
@@ -57,6 +61,8 @@ const validateStep = (step: number, data: FormData): boolean => {
 interface FormData {
   // Datos Personales
   nombreCompleto: string;
+  email: string;
+  telefono: string;
   edad: number;
   altura: number;
   pesoActual?: number;
@@ -110,6 +116,8 @@ const ClientAssessmentForm: React.FC = () => {
   
   const { control, handleSubmit, watch, formState: { errors, isSubmitting }, setError, clearErrors } = useForm<FormData>({
     defaultValues: {
+      email: '',
+      telefono: '',
       disponibilidadDias: [],
       objetivos: [],
       seSienteComodaPesandose: false,
@@ -259,7 +267,7 @@ const ClientAssessmentForm: React.FC = () => {
 
   // Show success message if form is submitted
   if (isSubmitted && submittedData) {
-    const whatsappMessage = `Hola Jernie, soy ${submittedData.nombreCompleto} y he completado mi evaluación personal. Me interesa agendar mi clase GRATIS.`;
+    const whatsappMessage = `Hola Jernie, soy ${submittedData.nombreCompleto} (${submittedData.telefono}) y he completado mi evaluación personal. Me interesa agendar mi clase GRATIS.`;
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
     
     return (
@@ -323,6 +331,40 @@ const ClientAssessmentForm: React.FC = () => {
               )}
             />
             {errors.nombreCompleto && <span className="error">{errors.nombreCompleto.message}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email *</label>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="email"
+                  id="email"
+                  placeholder="tu@email.com"
+                />
+              )}
+            />
+            {errors.email && <span className="error">{errors.email.message}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="telefono">Teléfono *</label>
+            <Controller
+              name="telefono"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="tel"
+                  id="telefono"
+                  placeholder="+34 123 456 789"
+                />
+              )}
+            />
+            {errors.telefono && <span className="error">{errors.telefono.message}</span>}
           </div>
 
           <div className="form-row">
