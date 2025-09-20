@@ -2,7 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import AssessmentForm from '../components/AssessmentForm.astro';
+import ClientAssessmentForm from '../components/ClientAssessmentForm.tsx';
 ---
 
 <!DOCTYPE html>
@@ -62,14 +62,14 @@ import AssessmentForm from '../components/AssessmentForm.astro';
 	<body>
 		<Header />
 		
-		<main class="assessment-container">
-			<section class="assessment-header">
-				<h1>📋 Evaluación Personal</h1>
-				<p>Completa este formulario detallado para que Jernie pueda crear tu plan de entrenamiento personalizado. Toda la información es confidencial y se utilizará únicamente para diseñar tu programa de fitness.</p>
-			</section>
-			
-			<AssessmentForm />
-		</main>
+        <main class="assessment-container">
+          <section class="assessment-header">
+            <h1>📋 Evaluación Personal</h1>
+            <p>Completa este formulario detallado para que Jernie pueda crear tu plan de entrenamiento personalizado. Toda la información es confidencial y se utilizará únicamente para diseñar tu programa de fitness.</p>
+          </section>
+
+          <ClientAssessmentForm client:load />
+        </main>
 		
 		<Footer />
 	</body>
