@@ -114,6 +114,8 @@ const ClientAssessmentForm: React.FC = () => {
   const [submittedData, setSubmittedData] = useState<FormData | null>(null);
   const totalSteps = 6;
   
+  console.log('ClientAssessmentForm rendered, currentStep:', currentStep);
+  
   const { control, handleSubmit, watch, formState: { errors, isSubmitting }, setError, clearErrors } = useForm<FormData>({
     defaultValues: {
       email: '',
@@ -132,20 +134,26 @@ const ClientAssessmentForm: React.FC = () => {
   });
 
   const onSubmit = async (data: FormData) => {
+    console.log('Form submission started', data);
+    
     // Clear previous errors
     clearErrors();
     
     // Validate form
     const validationErrors = validateForm(data);
+    console.log('Validation errors:', validationErrors);
+    
     if (Object.keys(validationErrors).length > 0) {
       Object.entries(validationErrors).forEach(([field, message]) => {
         setError(field as keyof FormData, { type: 'manual', message });
       });
+      console.log('Form submission blocked by validation');
       return;
     }
 
     try {
-      const response = await fetch('https://jerniefit-client-assessment-api.o-497.workers.dev/api/submit-assessment', {
+      console.log('Sending request to API...');
+      const response = await fetch('https://api.jernie.fit/api/submit-assessment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -153,15 +161,20 @@ const ClientAssessmentForm: React.FC = () => {
         body: JSON.stringify(data),
       });
 
+      console.log('API response status:', response.status);
+      const responseData = await response.json();
+      console.log('API response data:', responseData);
+
       if (response.ok) {
+        console.log('Form submitted successfully');
         setSubmittedData(data);
         setIsSubmitted(true);
       } else {
-        throw new Error('Error al enviar el formulario');
+        throw new Error(`Error al enviar el formulario: ${responseData.error || 'Unknown error'}`);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
+      console.error('Form submission error:', error);
+      alert(`Hubo un error al enviar el formulario: ${error.message}. Por favor, inténtalo de nuevo.`);
     }
   };
 
