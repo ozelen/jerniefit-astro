@@ -1,4 +1,8 @@
 /* Client Assessment Form Styles */
+* {
+  box-sizing: border-box;
+}
+
 .assessment-form-container {
   max-width: 800px;
   margin: 0 auto;
@@ -7,6 +11,7 @@
   background: #000000;
   color: #ffffff;
   min-height: 100vh;
+  width: 100%;
 }
 
 .form-header {
@@ -613,75 +618,301 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .assessment-form-container {
-    padding: 10px;
+    padding: 5px;
+    margin: 0;
   }
   
   .form-header {
-    padding: 20px 10px;
+    padding: 15px 10px;
+    margin-bottom: 20px;
   }
   
   .form-header h1 {
-    font-size: 2rem;
-  }
-  
-  .assessment-form {
-    padding: 20px;
-  }
-  
-  .form-section h2 {
-    font-size: 1.5rem;
-  }
-  
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-  
-  .button-group,
-  .multi-select-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .option-button,
-  .multi-select-button {
-    min-width: auto;
-    width: 100%;
-  }
-  
-  .wizard-navigation {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .nav-button {
-    width: 100%;
-    min-width: auto;
-  }
-  
-  .submit-button {
-    width: 100%;
-    min-width: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .form-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
   }
   
   .form-header p {
     font-size: 1rem;
   }
   
+  .assessment-form {
+    padding: 15px;
+    margin: 0;
+  }
+  
+  .form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+  }
+  
+  .form-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  
   .form-group input,
   .form-group textarea,
   .form-group select {
     padding: 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    border-radius: 4px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .button-group,
+  .multi-select-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .option-button,
+  .multi-select-button {
+    min-width: auto;
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .wizard-navigation {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 20px;
+  }
+  
+  .nav-button {
+    width: 100%;
+    min-width: auto;
+    padding: 14px 24px;
+    font-size: 0.9rem;
   }
   
   .submit-button {
-    padding: 15px 30px;
+    width: 100%;
+    min-width: auto;
+    padding: 16px 24px;
     font-size: 1rem;
+  }
+  
+  /* Terms section mobile */
+  .terms-section {
+    padding: 15px;
+    margin: 15px 0;
+  }
+  
+  .terms-content {
+    max-height: 250px;
+    font-size: 0.9rem;
+  }
+  
+  .checkbox-group {
+    margin: 15px 0;
+  }
+  
+  .checkbox-label {
+    padding: 12px;
+  }
+  
+  .checkbox-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .assessment-form-container {
+    padding: 2px;
+  }
+  
+  .form-header {
+    padding: 10px 8px;
+    margin-bottom: 15px;
+  }
+  
+  .form-header h1 {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+  
+  .form-header p {
+    font-size: 0.9rem;
+  }
+  
+  .assessment-form {
+    padding: 10px;
+  }
+  
+  .form-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+  }
+  
+  .form-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .option-button,
+  .multi-select-button {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .wizard-navigation {
+    margin-top: 25px;
+    padding-top: 15px;
+    gap: 10px;
+  }
+  
+  .nav-button {
+    padding: 12px 20px;
+    font-size: 0.85rem;
+  }
+  
+  .submit-button {
+    padding: 14px 20px;
+    font-size: 0.9rem;
+  }
+  
+  /* Terms section for very small screens */
+  .terms-section {
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .terms-content {
+    max-height: 200px;
+    font-size: 0.8rem;
+  }
+  
+  .checkbox-group {
+    margin: 10px 0;
+  }
+  
+  .checkbox-label {
+    padding: 10px;
+  }
+  
+  .checkbox-text {
+    font-size: 12px;
+  }
+  
+  .checkmark {
+    height: 18px;
+    width: 18px;
+    margin-right: 10px;
+  }
+}
+
+/* Additional mobile improvements */
+@media (max-width: 360px) {
+  .assessment-form-container {
+    padding: 1px;
+  }
+  
+  .form-header {
+    padding: 8px 5px;
+  }
+  
+  .form-header h1 {
+    font-size: 1.2rem;
+  }
+  
+  .assessment-form {
+    padding: 8px;
+  }
+  
+  .form-section h2 {
+    font-size: 1.1rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 8px;
+  }
+  
+  .option-button,
+  .multi-select-button {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .nav-button {
+    padding: 10px 16px;
+    font-size: 0.8rem;
+  }
+  
+  .submit-button {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .assessment-form-container {
+    padding: 10px;
+  }
+  
+  .form-header {
+    padding: 15px 10px;
+    margin-bottom: 15px;
+  }
+  
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .assessment-form {
+    padding: 15px;
+  }
+  
+  .form-section {
+    margin-bottom: 20px;
+  }
+  
+  .form-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .wizard-navigation {
+    margin-top: 20px;
+    padding-top: 15px;
   }
 }
 
