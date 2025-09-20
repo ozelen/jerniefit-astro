@@ -20,9 +20,9 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 		
 		<div class="nav-links" id="nav-links">
 			<HeaderLink href="/">Inicio</HeaderLink>
-			<HeaderLink href="#about">Sobre mí</HeaderLink>
-			<HeaderLink href="#servicios">Servicios</HeaderLink>
-			<HeaderLink href="#contact">Contacto</HeaderLink>
+			<HeaderLink href="/#about">Sobre mí</HeaderLink>
+			<HeaderLink href="/#servicios">Servicios</HeaderLink>
+			<HeaderLink href="/#contact">Contacto</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			
 			<!-- Mobile-only social links -->
@@ -437,3 +437,89 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 		}
 	}
 </style>
+
+<script>
+	// Handle hash-based navigation highlighting
+	function updateActiveNavLink() {
+		const currentHash = window.location.hash;
+		const navLinks = document.querySelectorAll('.nav-links a[href^="/#"]');
+		
+		// Remove active class from all hash links
+		navLinks.forEach(link => {
+			link.classList.remove('active');
+		});
+		
+		// Add active class to the matching hash link
+		if (currentHash) {
+			const activeLink = document.querySelector(`.nav-links a[href="/${currentHash}"]`);
+			if (activeLink) {
+				activeLink.classList.add('active');
+			}
+		}
+	}
+	
+	// Handle scroll-based navigation highlighting
+	function updateActiveNavLinkOnScroll() {
+		// Only run on home page
+		if (window.location.pathname !== '/' && window.location.pathname !== '') {
+			return;
+		}
+		
+		const sections = ['about', 'servicios', 'contact'];
+		const navLinks = document.querySelectorAll('.nav-links a[href^="/#"]');
+		
+		// Remove active class from all hash links
+		navLinks.forEach(link => {
+			link.classList.remove('active');
+		});
+		
+		// Find which section is currently in view
+		let currentSection = '';
+		const scrollPosition = window.scrollY + 100; // Offset for header height
+		
+		for (const sectionId of sections) {
+			const section = document.getElementById(sectionId);
+			if (section) {
+				const sectionTop = section.offsetTop;
+				const sectionBottom = sectionTop + section.offsetHeight;
+				
+				if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+					currentSection = sectionId;
+					break;
+				}
+			}
+		}
+		
+		// If we're at the top of the page, highlight the home link
+		if (window.scrollY < 100) {
+			const homeLink = document.querySelector('.nav-links a[href="/"]');
+			if (homeLink) {
+				homeLink.classList.add('active');
+			}
+		} else if (currentSection) {
+			// Highlight the corresponding navigation link
+			const activeLink = document.querySelector(`.nav-links a[href="/#${currentSection}"]`);
+			if (activeLink) {
+				activeLink.classList.add('active');
+			}
+		}
+	}
+	
+	// Update on page load
+	document.addEventListener('DOMContentLoaded', () => {
+		updateActiveNavLink();
+		updateActiveNavLinkOnScroll();
+	});
+	
+	// Update on hash change
+	window.addEventListener('hashchange', updateActiveNavLink);
+	
+	// Update on scroll (with throttling for performance)
+	let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
+	window.addEventListener('scroll', () => {
+		if (scrollTimeout) {
+			clearTimeout(scrollTimeout);
+		}
+		scrollTimeout = setTimeout(updateActiveNavLinkOnScroll, 10);
+	});
+</script>
