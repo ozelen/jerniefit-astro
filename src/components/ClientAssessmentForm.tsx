@@ -13,10 +13,10 @@ const validateForm = (data: FormData): Record<string, string> => {
   if (!data.email) errors.email = 'El email es requerido';
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'El email no es válido';
   if (!data.telefono) errors.telefono = 'El teléfono es requerido';
-  if (data.telefono && !/^[\+]?[0-9\s\-\(\)]{9,}$/.test(data.telefono)) errors.telefono = 'El teléfono no es válido';
+  if (data.telefono && !/^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.telefono)) errors.telefono = 'El teléfono debe tener entre 9 y 15 dígitos';
   if (!data.edad || data.edad < 16 || data.edad > 100) errors.edad = 'La edad debe estar entre 16 y 100 años';
   if (!data.altura || data.altura < 100 || data.altura > 250) errors.altura = 'La altura debe estar entre 100 y 250 cm';
-  if (data.pesoActual && (data.pesoActual < 30 || data.pesoActual > 300)) errors.pesoActual = 'El peso debe estar entre 30 y 300 kg';
+  if (data.pesoActual && data.pesoActual !== '' && (data.pesoActual < 30 || data.pesoActual > 300)) errors.pesoActual = 'El peso debe estar entre 30 y 300 kg';
   if (!data.horariosPreferidos) errors.horariosPreferidos = 'Los horarios preferidos son requeridos';
   if (!data.frecuenciaEjercicio) errors.frecuenciaEjercicio = 'La frecuencia de ejercicio es requerida';
   if (!data.objetivos || data.objetivos.length === 0) errors.objetivos = 'Selecciona al menos un objetivo';
@@ -25,6 +25,8 @@ const validateForm = (data: FormData): Record<string, string> => {
   if (!data.tipoMedicion) errors.tipoMedicion = 'El tipo de medición es requerido';
   if (!data.tomaSuficienteAgua) errors.tomaSuficienteAgua = 'Esta información es requerida';
   if (!data.disponibilidadDias || data.disponibilidadDias.length === 0) errors.disponibilidadDias = 'Selecciona al menos un día';
+  if (!data.aceptaTerminos) errors.aceptaTerminos = 'Debes aceptar los términos y condiciones';
+  if (!data.aceptaProcesamientoDatos) errors.aceptaProcesamientoDatos = 'Debes aceptar el procesamiento de datos';
   
   return errors;
 };
@@ -33,7 +35,21 @@ const validateForm = (data: FormData): Record<string, string> => {
 const validateStep = (step: number, data: FormData): boolean => {
   switch (step) {
     case 1: // Datos Personales
-      return !!(data.nombreCompleto && data.email && data.telefono && data.edad && data.altura);
+      return !!(
+        data.nombreCompleto && 
+        data.email && 
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) &&
+        data.telefono && 
+        /^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.telefono) &&
+        data.edad && 
+        data.edad >= 16 && 
+        data.edad <= 100 &&
+        data.altura && 
+        data.altura >= 100 && 
+        data.altura <= 250 &&
+        (data.pesoActual === undefined || data.pesoActual === '' || data.pesoActual === null || (data.pesoActual >= 30 && data.pesoActual <= 300)) &&
+        data.seSienteComodaPesandose !== undefined
+      );
     case 2: // Salud y Antecedentes Médicos
       return !!(data.tieneCondicionMedica !== undefined && 
                 data.tomaMedicacion !== undefined && 
@@ -53,6 +69,8 @@ const validateStep = (step: number, data: FormData): boolean => {
                 data.tipoMedicion);
     case 6: // Hábitos de Salud
       return !!(data.tomaSuficienteAgua !== undefined);
+    case 7: // Términos y Condiciones
+      return !!(data.aceptaTerminos && data.aceptaProcesamientoDatos);
     default:
       return true;
   }
@@ -106,13 +124,17 @@ interface FormData {
   
   // Otros Detalles
   otrosDetalles?: string;
+  
+  // Terms and Conditions
+  aceptaTerminos: boolean;
+  aceptaProcesamientoDatos: boolean;
 }
 
 const ClientAssessmentForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<FormData | null>(null);
-  const totalSteps = 6;
+  const totalSteps = 7;
   
   console.log('ClientAssessmentForm rendered, currentStep:', currentStep);
   
@@ -129,7 +151,9 @@ const ClientAssessmentForm: React.FC = () => {
       tienePrescripcionMedica: false,
       trabaja: false,
       haHechoEjercicio: false,
-      sigueAlimentacionEspecifica: false
+      sigueAlimentacionEspecifica: false,
+      aceptaTerminos: false,
+      aceptaProcesamientoDatos: false
     }
   });
 
@@ -1128,6 +1152,91 @@ const ClientAssessmentForm: React.FC = () => {
               )}
             />
           </div>
+          </section>
+        )}
+
+        {/* Step 7: Términos y Condiciones */}
+        {currentStep === 7 && (
+          <section className="form-section wizard-step">
+            <h2>📋 Términos y Condiciones</h2>
+            
+            <div className="terms-section">
+              <div className="terms-content">
+                <h3>🔒 Protección de Datos Personales</h3>
+                <p>
+                  Los datos personales que proporcionas en este formulario serán tratados de manera confidencial 
+                  y utilizados únicamente para crear tu plan de entrenamiento personalizado. 
+                  Jernie Richard (JernieFit) se compromete a proteger tu privacidad y cumplir con la normativa 
+                  de protección de datos (RGPD).
+                </p>
+                
+                <h3>📝 Términos del Servicio</h3>
+                <p>
+                  Al completar esta evaluación, aceptas que:
+                </p>
+                <ul>
+                  <li>La información proporcionada es veraz y completa</li>
+                  <li>El plan de entrenamiento será personalizado según tus respuestas</li>
+                  <li>Puedes contactar a Jernie para cualquier consulta o modificación</li>
+                  <li>El servicio está sujeto a disponibilidad y horarios acordados</li>
+                </ul>
+                
+                <h3>⚖️ Responsabilidad</h3>
+                <p>
+                  Es importante que consultes con un profesional médico antes de comenzar cualquier 
+                  programa de ejercicio, especialmente si tienes condiciones médicas preexistentes.
+                </p>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="checkbox-group">
+                <Controller
+                  name="aceptaTerminos"
+                  control={control}
+                  render={({ field }) => (
+                    <label className="checkbox-label">
+                      <input
+                        {...field}
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                      <span className="checkmark"></span>
+                      <span className="checkbox-text">
+                        Acepto los <strong>términos y condiciones</strong> del servicio *
+                      </span>
+                    </label>
+                  )}
+                />
+                {errors.aceptaTerminos && <span className="error">{errors.aceptaTerminos.message}</span>}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="checkbox-group">
+                <Controller
+                  name="aceptaProcesamientoDatos"
+                  control={control}
+                  render={({ field }) => (
+                    <label className="checkbox-label">
+                      <input
+                        {...field}
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                      <span className="checkmark"></span>
+                      <span className="checkbox-text">
+                        Acepto el <strong>procesamiento de mis datos personales</strong> para la creación 
+                        de mi plan de entrenamiento personalizado *
+                      </span>
+                    </label>
+                  )}
+                />
+                {errors.aceptaProcesamientoDatos && <span className="error">{errors.aceptaProcesamientoDatos.message}</span>}
+              </div>
+            </div>
           </section>
         )}
 

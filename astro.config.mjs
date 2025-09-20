@@ -15,4 +15,16 @@ export default defineConfig({
       enabled: true,
     },
   }),
+  vite: {
+    define: {
+      global: 'globalThis',
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'react-hook-form'],
+    },
+    ssr: {
+      noExternal: ['react-hook-form'],
+    },
+  },
+  output: 'server',
 });

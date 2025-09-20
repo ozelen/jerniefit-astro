@@ -3,6 +3,11 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION, TRAINER_NAME, TRAINER_AGE, TRAINER_LOCATION, TRAINER_ORIGIN, EXPERIENCE_YEARS, WHATSAPP_NUMBER } from '../consts';
+import { getCollection } from 'astro:content';
+
+const services = await getCollection('services');
+const regularServices = services.filter(service => !service.data.isPromo);
+const promoService = services.find(service => service.data.isPromo);
 ---
 
 <!doctype html>
@@ -294,6 +299,17 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRAINER_NAME, TRAINER_AGE, TRAINER_LOCATI
 				background: var(--primary-color);
 				color: var(--black);
 				transform: translateY(-5px);
+			}
+			
+			.service-card-link {
+				display: block;
+				text-decoration: none;
+				color: inherit;
+			}
+			
+			.service-card-link:hover {
+				text-decoration: none;
+				color: inherit;
 			}
 			
 			.service-card h3 {
@@ -633,36 +649,32 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRAINER_NAME, TRAINER_AGE, TRAINER_LOCATI
 			<div class="container">
 				<h2>📦 Opciones de paquetes</h2>
 				<div class="services-grid">
-					<div class="service-card">
-						<h3>🎯 Plan Mensual Online</h3>
-						<p>4 clases en vivo por videollamada + seguimiento</p>
-						<p><strong>BONUS:</strong> rutinas grabadas + control de progreso</p>
-						<div class="price">$[tu precio]</div>
-					</div>
-					
-					<div class="service-card">
-						<h3>🏋️‍♀️ Entrenamiento Presencial Individual</h3>
-						<p>Sesiones 1 a 1 en tu casa o espacio al aire libre</p>
-						<div class="price">$[precio por clase]</div>
-					</div>
-					
-					<div class="service-card">
-						<h3>👭 Clases Grupales (2 a 4 personas)</h3>
-						<p>Ideal para entrenar con amigas, compartir energía y dividir el costo</p>
-						<div class="price">$[precio grupal]</div>
-					</div>
-					
-					<div class="service-card">
-						<h3>📋 Evaluación Personal GRATIS</h3>
-						<p>Completa tu evaluación personal para recibir un plan de entrenamiento personalizado</p>
-						<a href="/assessment" class="btn btn-primary">Comenzar Evaluación</a>
-					</div>
+					{
+						regularServices.map((service) => (
+							<a href={service.data.slug ? `/services/${service.data.slug}` : '#'} class="service-card service-card-link">
+								<h3>{service.data.title}</h3>
+								<p>{service.data.description}</p>
+								{service.data.features && service.data.features.map((feature) => (
+									<p><strong>{feature}</strong></p>
+								))}
+								{service.data.price && <div class="price">{service.data.price}</div>}
+								{service.data.ctaText && service.data.ctaLink && (
+									<span class="btn btn-primary">{service.data.ctaText}</span>
+								)}
+								{!service.data.ctaText && (
+									<span class="btn btn-primary">Ver detalles</span>
+								)}
+							</a>
+						))
+					}
 				</div>
 				
-				<div class="promo-section">
-					<h3>🎁 PROMO DE MES</h3>
-					<p>Primera clase de prueba GRATIS para que veas cómo trabajo y si encajamos bien 💬</p>
-				</div>
+				{promoService && (
+					<div class="promo-section">
+						<h3>{promoService.data.title}</h3>
+						<p>{promoService.data.description}</p>
+					</div>
+				)}
 			</div>
 		</section>
 
