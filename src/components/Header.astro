@@ -10,7 +10,15 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 				<img src="/logo.png" alt="JERNIEFIT" class="logo-img" />
 			</a>
 		</div>
-		<div class="nav-links">
+		
+		<!-- Mobile Menu Button -->
+		<button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+			<span class="hamburger-line"></span>
+			<span class="hamburger-line"></span>
+			<span class="hamburger-line"></span>
+		</button>
+		
+		<div class="nav-links" id="nav-links">
 			<HeaderLink href="/">Inicio</HeaderLink>
 			<HeaderLink href="#about">Sobre mí</HeaderLink>
 			<HeaderLink href="#servicios">Servicios</HeaderLink>
@@ -18,6 +26,7 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 			<HeaderLink href="#contact">Contacto</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 		</div>
+		
 		<div class="nav-right">
 			<div class="social-links">
 				<a href="https://www.instagram.com/jerniefit" target="_blank" class="social-link" title="Instagram">
@@ -42,6 +51,53 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 		</div>
 	</nav>
 </header>
+
+<script>
+	// Mobile menu toggle functionality
+	document.addEventListener('DOMContentLoaded', function() {
+		const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+		const navLinks = document.getElementById('nav-links');
+		const body = document.body;
+		
+		if (mobileMenuToggle && navLinks) {
+			mobileMenuToggle.addEventListener('click', function() {
+				const isOpen = navLinks.classList.contains('mobile-open');
+				
+				if (isOpen) {
+					// Close menu
+					navLinks.classList.remove('mobile-open');
+					mobileMenuToggle.classList.remove('active');
+					body.classList.remove('menu-open');
+				} else {
+					// Open menu
+					navLinks.classList.add('mobile-open');
+					mobileMenuToggle.classList.add('active');
+					body.classList.add('menu-open');
+				}
+			});
+			
+			// Close menu when clicking on a link
+			const navLinkElements = navLinks.querySelectorAll('a');
+			navLinkElements.forEach(link => {
+				link.addEventListener('click', function() {
+					navLinks.classList.remove('mobile-open');
+					mobileMenuToggle.classList.remove('active');
+					body.classList.remove('menu-open');
+				});
+			});
+			
+			// Close menu when clicking outside
+			document.addEventListener('click', function(event) {
+				const target = event.target as Node;
+				if (target && !navLinks.contains(target) && !mobileMenuToggle.contains(target)) {
+					navLinks.classList.remove('mobile-open');
+					mobileMenuToggle.classList.remove('active');
+					body.classList.remove('menu-open');
+				}
+			});
+		}
+	});
+</script>
 <style>
 	header {
 		position: fixed;
@@ -167,6 +223,41 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 		transform: translateY(-1px);
 	}
 
+	/* Mobile Menu Toggle Button */
+	.mobile-menu-toggle {
+		display: none;
+		flex-direction: column;
+		justify-content: space-around;
+		width: 30px;
+		height: 30px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		z-index: 1001;
+	}
+
+	.hamburger-line {
+		width: 100%;
+		height: 3px;
+		background: #ffffff;
+		transition: all 0.3s ease;
+		transform-origin: center;
+	}
+
+	.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+		transform: rotate(45deg) translate(6px, 6px);
+	}
+
+	.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+		opacity: 0;
+	}
+
+	.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+		transform: rotate(-45deg) translate(6px, -6px);
+	}
+
+	/* Mobile Styles */
 	@media (max-width: 768px) {
 		header {
 			padding: 0 1rem;
@@ -176,17 +267,100 @@ import { SITE_TITLE, WHATSAPP_NUMBER } from '../consts';
 			height: 70px;
 		}
 
-		.nav-links {
-			display: none;
-		}
-
 		.logo-img {
 			height: 40px;
 		}
 
+		.mobile-menu-toggle {
+			display: flex;
+		}
+
+		.nav-links {
+			position: fixed;
+			top: 70px;
+			left: 0;
+			right: 0;
+			background: rgba(0, 0, 0, 0.95);
+			backdrop-filter: blur(20px);
+			flex-direction: column;
+			padding: 2rem 1rem;
+			transform: translateY(-100%);
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+			z-index: 1000;
+			border-bottom: 1px solid #ff1493;
+		}
+
+		.nav-links.mobile-open {
+			transform: translateY(0);
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.nav-links a {
+			padding: 1rem 0;
+			font-size: 1.1rem;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			text-align: center;
+		}
+
+		.nav-links a:last-child {
+			border-bottom: none;
+		}
+
+		.nav-right {
+			gap: 1rem;
+		}
+
+		.social-links {
+			gap: 0.5rem;
+		}
+
+		.social-link {
+			width: 30px;
+			height: 30px;
+		}
+
 		.btn-nav {
-			padding: 10px 16px;
+			padding: 8px 12px;
 			font-size: 0.8rem;
+		}
+
+		/* Prevent body scroll when menu is open */
+		body.menu-open {
+			overflow: hidden;
+		}
+	}
+
+	@media (max-width: 480px) {
+		header {
+			padding: 0 0.5rem;
+		}
+
+		nav {
+			height: 60px;
+		}
+
+		.logo-img {
+			height: 35px;
+		}
+
+		.nav-links {
+			top: 60px;
+		}
+
+		.nav-right {
+			gap: 0.5rem;
+		}
+
+		.social-links {
+			display: none; /* Hide social links on very small screens */
+		}
+
+		.btn-nav {
+			padding: 6px 10px;
+			font-size: 0.75rem;
 		}
 	}
 </style>
