@@ -9,24 +9,24 @@ const WHATSAPP_NUMBER = '+34-695-25-10-13';
 const validateForm = (data: FormData): Record<string, string> => {
   const errors: Record<string, string> = {};
   
-  if (!data.nombreCompleto) errors.nombreCompleto = 'El nombre completo es requerido';
+  if (!data.fullName) errors.fullName = 'El nombre completo es requerido';
   if (!data.email) errors.email = 'El email es requerido';
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'El email no es válido';
-  if (!data.telefono) errors.telefono = 'El teléfono es requerido';
-  if (data.telefono && !/^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.telefono)) errors.telefono = 'El teléfono debe tener entre 9 y 15 dígitos';
-  if (!data.edad || data.edad < 16 || data.edad > 100) errors.edad = 'La edad debe estar entre 16 y 100 años';
-  if (!data.altura || data.altura < 100 || data.altura > 250) errors.altura = 'La altura debe estar entre 100 y 250 cm';
-  if (data.pesoActual && data.pesoActual !== '' && (data.pesoActual < 30 || data.pesoActual > 300)) errors.pesoActual = 'El peso debe estar entre 30 y 300 kg';
-  if (!data.horariosPreferidos) errors.horariosPreferidos = 'Los horarios preferidos son requeridos';
-  if (!data.frecuenciaEjercicio) errors.frecuenciaEjercicio = 'La frecuencia de ejercicio es requerida';
-  if (!data.objetivos || data.objetivos.length === 0) errors.objetivos = 'Selecciona al menos un objetivo';
-  if (!data.horarioPreferido) errors.horarioPreferido = 'El horario preferido es requerido';
-  if (!data.lugarPreferido) errors.lugarPreferido = 'El lugar preferido es requerido';
-  if (!data.tipoMedicion) errors.tipoMedicion = 'El tipo de medición es requerido';
-  if (!data.tomaSuficienteAgua) errors.tomaSuficienteAgua = 'Esta información es requerida';
-  if (!data.disponibilidadDias || data.disponibilidadDias.length === 0) errors.disponibilidadDias = 'Selecciona al menos un día';
-  if (!data.aceptaTerminos) errors.aceptaTerminos = 'Debes aceptar los términos y condiciones';
-  if (!data.aceptaProcesamientoDatos) errors.aceptaProcesamientoDatos = 'Debes aceptar el procesamiento de datos';
+  if (!data.phone) errors.phone = 'El teléfono es requerido';
+  if (data.phone && !/^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.phone)) errors.phone = 'El teléfono debe tener entre 9 y 15 dígitos';
+  if (!data.age || data.age < 16 || data.age > 100) errors.age = 'La edad debe estar entre 16 y 100 años';
+  if (!data.height || data.height < 100 || data.height > 250) errors.height = 'La altura debe estar entre 100 y 250 cm';
+  if (data.currentWeight && data.currentWeight !== '' && (data.currentWeight < 30 || data.currentWeight > 300)) errors.currentWeight = 'El peso debe estar entre 30 y 300 kg';
+  if (!data.preferredTimes) errors.preferredTimes = 'Los horarios preferidos son requeridos';
+  if (!data.exerciseFrequency) errors.exerciseFrequency = 'La frecuencia de ejercicio es requerida';
+  if (!data.goals || data.goals.length === 0) errors.goals = 'Selecciona al menos un objetivo';
+  if (!data.preferredTime) errors.preferredTime = 'El horario preferido es requerido';
+  if (!data.preferredLocation) errors.preferredLocation = 'El lugar preferido es requerido';
+  if (!data.measurementType) errors.measurementType = 'El tipo de medición es requerido';
+  if (!data.drinksEnoughWater) errors.drinksEnoughWater = 'Esta información es requerida';
+  if (!data.availableDays || data.availableDays.length === 0) errors.availableDays = 'Selecciona al menos un día';
+  if (!data.acceptsTerms) errors.acceptsTerms = 'Debes aceptar los términos y condiciones';
+  if (!data.acceptsDataProcessing) errors.acceptsDataProcessing = 'Debes aceptar el procesamiento de datos';
   
   return errors;
 };
@@ -34,100 +34,101 @@ const validateForm = (data: FormData): Record<string, string> => {
 // Step validation functions
 const validateStep = (step: number, data: FormData): boolean => {
   switch (step) {
-    case 1: // Datos Personales
+    case 1: // Personal Information
       return !!(
-        data.nombreCompleto && 
+        data.fullName && 
         data.email && 
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) &&
-        data.telefono && 
-        /^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.telefono) &&
-        data.edad && 
-        data.edad >= 16 && 
-        data.edad <= 100 &&
-        data.altura && 
-        data.altura >= 100 && 
-        data.altura <= 250 &&
-        (data.pesoActual === undefined || data.pesoActual === '' || data.pesoActual === null || (data.pesoActual >= 30 && data.pesoActual <= 300)) &&
-        data.seSienteComodaPesandose !== undefined
+        data.phone && 
+        /^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.phone) &&
+        data.age && 
+        data.age >= 16 && 
+        data.age <= 100 &&
+        data.height && 
+        data.height >= 100 && 
+        data.height <= 250 &&
+        (data.currentWeight === undefined || data.currentWeight === '' || data.currentWeight === null || (data.currentWeight >= 30 && data.currentWeight <= 300)) &&
+        data.comfortableWithWeighing !== undefined
       );
-    case 2: // Salud y Antecedentes Médicos
-      return !!(data.tieneCondicionMedica !== undefined && 
-                data.tomaMedicacion !== undefined && 
-                data.tieneLesiones !== undefined && 
-                data.tienePrescripcionMedica !== undefined);
-    case 3: // Hábitos y Estilo de Vida
-      return !!(data.trabaja !== undefined && 
-                data.disponibilidadDias && data.disponibilidadDias.length > 0 && 
-                data.horariosPreferidos && 
-                data.haHechoEjercicio !== undefined);
-    case 4: // Objetivos
-      return !!(data.objetivos && data.objetivos.length > 0);
-    case 5: // Preferencias de Entrenamiento
-      return !!(data.frecuenciaEjercicio && 
-                data.horarioPreferido && 
-                data.lugarPreferido && 
-                data.tipoMedicion);
-    case 6: // Hábitos de Salud
-      return !!(data.tomaSuficienteAgua !== undefined);
-    case 7: // Términos y Condiciones
-      return !!(data.aceptaTerminos && data.aceptaProcesamientoDatos);
+    case 2: // Health and Medical History
+      return !!(data.hasMedicalCondition !== undefined && 
+                data.takesMedication !== undefined && 
+                data.hasInjuries !== undefined && 
+                data.hasMedicalPrescription !== undefined);
+    case 3: // Lifestyle and Habits
+      return !!(data.works !== undefined && 
+                data.availableDays && data.availableDays.length > 0 && 
+                data.preferredTimes && 
+                data.hasExercisedBefore !== undefined);
+    case 4: // Goals
+      return !!(data.goals && data.goals.length > 0);
+    case 5: // Training Preferences
+      return !!(data.exerciseFrequency && 
+                data.preferredTime && 
+                data.preferredLocation && 
+                data.measurementType);
+    case 6: // Health Habits
+      return !!(data.drinksEnoughWater !== undefined);
+    case 7: // Terms and Conditions
+      return !!(data.acceptsTerms && data.acceptsDataProcessing);
     default:
       return true;
   }
 };
 
 interface FormData {
-  // Datos Personales
-  nombreCompleto: string;
+  // Personal Information
+  fullName: string;
   email: string;
-  telefono: string;
-  edad: number;
-  altura: number;
-  pesoActual?: number;
-  seSienteComodaPesandose: boolean;
+  phone: string;
+  age: number;
+  height: number;
+  currentWeight?: number;
+  comfortableWithWeighing: boolean;
   
-  // Salud y Antecedentes Médicos
-  tieneCondicionMedica: boolean;
-  condicionMedicaDetalle?: string;
-  tomaMedicacion: boolean;
-  medicacionDetalle?: string;
-  tieneLesiones: boolean;
-  lesionesDetalle?: string;
-  tienePrescripcionMedica: boolean;
+  // Health and Medical History
+  hasMedicalCondition: boolean;
+  medicalConditionDetails?: string;
+  takesMedication: boolean;
+  medicationDetails?: string;
+  hasInjuries: boolean;
+  injuryDetails?: string;
+  hasMedicalPrescription: boolean;
   
-  // Hábitos y Estilo de Vida
-  trabaja: boolean;
-  areaTrabajo?: string;
-  horarioLaboral?: string;
-  disponibilidadDias: string[];
-  horariosPreferidos: string;
-  haHechoEjercicio: boolean;
-  tipoEjercicio?: string;
-  frecuenciaEjercicio: string;
+  // Lifestyle and Habits
+  works: boolean;
+  workArea?: string;
+  workSchedule?: string;
+  availableDays: string[];
+  preferredTimes: string;
+  hasExercisedBefore: boolean;
+  exerciseType?: string;
+  exerciseFrequency: string;
   
-  // Objetivos
-  objetivos: string[];
-  objetivoOtro?: string;
-  metaEspecifica?: string;
+  // Goals
+  goals: string[];
+  otherGoal?: string;
+  specificGoal?: string;
   
-  // Preferencias
-  horarioPreferido: string;
-  lugarPreferido: string;
-  ejerciciosNoGustan?: string;
-  tipoMedicion: string;
+  // Preferences
+  preferredTime: string;
+  preferredLocation: string;
+  dislikedExercises?: string;
+  measurementType: string;
   
-  // Alimentación
-  sigueAlimentacionEspecifica: boolean;
-  tipoAlimentacion?: string;
-  alimentosNoGustan?: string;
-  tomaSuficienteAgua: string;
+  // Nutrition
+  followsSpecificDiet: boolean;
+  dietType?: string;
+  dislikedFoods?: string;
+  drinksEnoughWater: string;
   
-  // Otros Detalles
-  otrosDetalles?: string;
+  // Other Details
+  otherDetails?: string;
   
   // Terms and Conditions
-  aceptaTerminos: boolean;
-  aceptaProcesamientoDatos: boolean;
+  acceptsTerms: boolean;
+  acceptsDataProcessing: boolean;
+  subscribesToNewsletter: boolean;
 }
 
 const ClientAssessmentForm: React.FC = () => {
@@ -141,19 +142,20 @@ const ClientAssessmentForm: React.FC = () => {
   const { control, handleSubmit, watch, formState: { errors, isSubmitting }, setError, clearErrors } = useForm<FormData>({
     defaultValues: {
       email: '',
-      telefono: '',
-      disponibilidadDias: [],
-      objetivos: [],
-      seSienteComodaPesandose: false,
-      tieneCondicionMedica: false,
-      tomaMedicacion: false,
-      tieneLesiones: false,
-      tienePrescripcionMedica: false,
-      trabaja: false,
-      haHechoEjercicio: false,
-      sigueAlimentacionEspecifica: false,
-      aceptaTerminos: false,
-      aceptaProcesamientoDatos: false
+      phone: '',
+      availableDays: [],
+      goals: [],
+      comfortableWithWeighing: false,
+      hasMedicalCondition: false,
+      takesMedication: false,
+      hasInjuries: false,
+      hasMedicalPrescription: false,
+      works: false,
+      hasExercisedBefore: false,
+      followsSpecificDiet: false,
+      acceptsTerms: false,
+      acceptsDataProcessing: false,
+      subscribesToNewsletter: false
     }
   });
 
@@ -304,7 +306,7 @@ const ClientAssessmentForm: React.FC = () => {
 
   // Show success message if form is submitted
   if (isSubmitted && submittedData) {
-    const whatsappMessage = `Hola Jernie, soy ${submittedData.nombreCompleto} (${submittedData.telefono}) y he completado mi evaluación personal. Me interesa agendar mi clase GRATIS.`;
+    const whatsappMessage = `Hola Jernie, soy ${submittedData.fullName} (${submittedData.phone}) y he completado mi evaluación personal. Me interesa agendar mi clase GRATIS.`;
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
     
     return (
@@ -312,7 +314,7 @@ const ClientAssessmentForm: React.FC = () => {
         <div className="success-message">
           <div className="success-icon">✅</div>
           <h2>¡Evaluación Completada!</h2>
-          <p>Gracias <strong>{submittedData.nombreCompleto}</strong>, hemos recibido tu información correctamente.</p>
+          <p>Gracias <strong>{submittedData.fullName}</strong>, hemos recibido tu información correctamente.</p>
           <p>Jernie revisará tu evaluación y se pondrá en contacto contigo pronto.</p>
           
           <div className="whatsapp-cta">
@@ -354,20 +356,20 @@ const ClientAssessmentForm: React.FC = () => {
             <h2>👤 Datos Personales</h2>
           
           <div className="form-group">
-            <label htmlFor="nombreCompleto">Nombre completo *</label>
+            <label htmlFor="fullName">Nombre completo *</label>
             <Controller
-              name="nombreCompleto"
+              name="fullName"
               control={control}
               render={({ field }) => (
                 <input
                   {...field}
                   type="text"
-                  id="nombreCompleto"
+                  id="fullName"
                   placeholder="Tu nombre completo"
                 />
               )}
             />
-            {errors.nombreCompleto && <span className="error">{errors.nombreCompleto.message}</span>}
+            {errors.fullName && <span className="error">{errors.fullName.message}</span>}
           </div>
 
           <div className="form-group">
@@ -388,71 +390,71 @@ const ClientAssessmentForm: React.FC = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="telefono">Teléfono *</label>
+            <label htmlFor="phone">Teléfono *</label>
             <Controller
-              name="telefono"
+              name="phone"
               control={control}
               render={({ field }) => (
                 <input
                   {...field}
                   type="tel"
-                  id="telefono"
+                  id="phone"
                   placeholder="+34 123 456 789"
                 />
               )}
             />
-            {errors.telefono && <span className="error">{errors.telefono.message}</span>}
+            {errors.phone && <span className="error">{errors.phone.message}</span>}
           </div>
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="edad">Edad *</label>
+              <label htmlFor="age">Edad *</label>
               <Controller
-                name="edad"
+                name="age"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="number"
-                    id="edad"
+                    id="age"
                     min="16"
                     max="100"
                     onChange={(e) => field.onChange(parseInt(e.target.value) || '')}
                   />
                 )}
               />
-              {errors.edad && <span className="error">{errors.edad.message}</span>}
+              {errors.age && <span className="error">{errors.age.message}</span>}
             </div>
 
             <div className="form-group">
-              <label htmlFor="altura">Altura (cm) *</label>
+              <label htmlFor="height">Altura (cm) *</label>
               <Controller
-                name="altura"
+                name="height"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="number"
-                    id="altura"
+                    id="height"
                     min="100"
                     max="250"
                     onChange={(e) => field.onChange(parseInt(e.target.value) || '')}
                   />
                 )}
               />
-              {errors.altura && <span className="error">{errors.altura.message}</span>}
+              {errors.height && <span className="error">{errors.height.message}</span>}
             </div>
 
             <div className="form-group">
-              <label htmlFor="pesoActual">Peso actual (kg)</label>
+              <label htmlFor="currentWeight">Peso actual (kg)</label>
               <Controller
-                name="pesoActual"
+                name="currentWeight"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="number"
-                    id="pesoActual"
+                    id="currentWeight"
                     min="30"
                     max="300"
                     step="0.1"
@@ -460,7 +462,7 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.pesoActual && <span className="error">{errors.pesoActual.message}</span>}
+              {errors.currentWeight && <span className="error">{errors.currentWeight.message}</span>}
             </div>
           </div>
 
@@ -468,7 +470,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Te sientes cómoda pesándote regularmente? *</label>
             <div className="button-group">
               <Controller
-                name="seSienteComodaPesandose"
+                name="comfortableWithWeighing"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -490,7 +492,7 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.seSienteComodaPesandose && <span className="error">{errors.seSienteComodaPesandose.message}</span>}
+            {errors.comfortableWithWeighing && <span className="error">{errors.comfortableWithWeighing.message}</span>}
           </div>
           </section>
         )}
@@ -504,7 +506,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Tienes alguna condición médica diagnosticada? *</label>
             <div className="button-group">
               <Controller
-                name="tieneCondicionMedica"
+                name="hasMedicalCondition"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -526,14 +528,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.tieneCondicionMedica && <span className="error">{errors.tieneCondicionMedica.message}</span>}
+            {errors.hasMedicalCondition && <span className="error">{errors.hasMedicalCondition.message}</span>}
           </div>
 
-          {watch('tieneCondicionMedica') && (
+          {watch('hasMedicalCondition') && (
             <div className="form-group">
               <label htmlFor="condicionMedicaDetalle">Especifica la condición médica</label>
               <Controller
-                name="condicionMedicaDetalle"
+                name="medicalConditionDetails"
                 control={control}
                 render={({ field }) => (
                   <textarea
@@ -544,7 +546,7 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.condicionMedicaDetalle && <span className="error">{errors.condicionMedicaDetalle.message}</span>}
+              {errors.medicalConditionDetails && <span className="error">{errors.medicalConditionDetails.message}</span>}
             </div>
           )}
 
@@ -552,7 +554,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Tomas alguna medicación o suplemento actualmente? *</label>
             <div className="button-group">
               <Controller
-                name="tomaMedicacion"
+                name="takesMedication"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -574,14 +576,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.tomaMedicacion && <span className="error">{errors.tomaMedicacion.message}</span>}
+            {errors.takesMedication && <span className="error">{errors.takesMedication.message}</span>}
           </div>
 
-          {watch('tomaMedicacion') && (
+          {watch('takesMedication') && (
             <div className="form-group">
               <label htmlFor="medicacionDetalle">¿Cuáles?</label>
               <Controller
-                name="medicacionDetalle"
+                name="medicationDetails"
                 control={control}
                 render={({ field }) => (
                   <textarea
@@ -592,7 +594,7 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.medicacionDetalle && <span className="error">{errors.medicacionDetalle.message}</span>}
+              {errors.medicationDetails && <span className="error">{errors.medicationDetails.message}</span>}
             </div>
           )}
 
@@ -600,7 +602,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Has tenido lesiones recientes o molestias físicas? *</label>
             <div className="button-group">
               <Controller
-                name="tieneLesiones"
+                name="hasInjuries"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -622,14 +624,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.tieneLesiones && <span className="error">{errors.tieneLesiones.message}</span>}
+            {errors.hasInjuries && <span className="error">{errors.hasInjuries.message}</span>}
           </div>
 
-          {watch('tieneLesiones') && (
+          {watch('hasInjuries') && (
             <div className="form-group">
               <label htmlFor="lesionesDetalle">¿Dónde?</label>
               <Controller
-                name="lesionesDetalle"
+                name="injuryDetails"
                 control={control}
                 render={({ field }) => (
                   <textarea
@@ -640,7 +642,7 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.lesionesDetalle && <span className="error">{errors.lesionesDetalle.message}</span>}
+              {errors.injuryDetails && <span className="error">{errors.injuryDetails.message}</span>}
             </div>
           )}
 
@@ -648,7 +650,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Tienes prescripción médica que limite tu actividad física? *</label>
             <div className="button-group">
               <Controller
-                name="tienePrescripcionMedica"
+                name="hasMedicalPrescription"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -670,7 +672,7 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.tienePrescripcionMedica && <span className="error">{errors.tienePrescripcionMedica.message}</span>}
+            {errors.hasMedicalPrescription && <span className="error">{errors.hasMedicalPrescription.message}</span>}
           </div>
           </section>
         )}
@@ -684,7 +686,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Trabajas actualmente? *</label>
             <div className="button-group">
               <Controller
-                name="trabaja"
+                name="works"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -706,15 +708,15 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.trabaja && <span className="error">{errors.trabaja.message}</span>}
+            {errors.works && <span className="error">{errors.works.message}</span>}
           </div>
 
-          {watch('trabaja') && (
+          {watch('works') && (
             <>
               <div className="form-group">
                 <label htmlFor="areaTrabajo">¿En qué área?</label>
                 <Controller
-                  name="areaTrabajo"
+                  name="workArea"
                   control={control}
                   render={({ field }) => (
                     <input
@@ -725,13 +727,13 @@ const ClientAssessmentForm: React.FC = () => {
                     />
                   )}
                 />
-                {errors.areaTrabajo && <span className="error">{errors.areaTrabajo.message}</span>}
+                {errors.workArea && <span className="error">{errors.workArea.message}</span>}
               </div>
 
               <div className="form-group">
                 <label htmlFor="horarioLaboral">¿Cuál es tu horario laboral?</label>
                 <Controller
-                  name="horarioLaboral"
+                  name="workSchedule"
                   control={control}
                   render={({ field }) => (
                     <input
@@ -742,7 +744,7 @@ const ClientAssessmentForm: React.FC = () => {
                     />
                   )}
                 />
-                {errors.horarioLaboral && <span className="error">{errors.horarioLaboral.message}</span>}
+                {errors.workSchedule && <span className="error">{errors.workSchedule.message}</span>}
               </div>
             </>
           )}
@@ -751,7 +753,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Qué días tienes disponibilidad para entrenar? *</label>
             <div className="multi-select-group">
               <Controller
-                name="disponibilidadDias"
+                name="availableDays"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -776,13 +778,13 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.disponibilidadDias && <span className="error">{errors.disponibilidadDias.message}</span>}
+            {errors.availableDays && <span className="error">{errors.availableDays.message}</span>}
           </div>
 
           <div className="form-group">
             <label htmlFor="horariosPreferidos">Horarios preferidos *</label>
             <Controller
-              name="horariosPreferidos"
+              name="preferredTimes"
               control={control}
               render={({ field }) => (
                 <input
@@ -793,14 +795,14 @@ const ClientAssessmentForm: React.FC = () => {
                 />
               )}
             />
-            {errors.horariosPreferidos && <span className="error">{errors.horariosPreferidos.message}</span>}
+            {errors.preferredTimes && <span className="error">{errors.preferredTimes.message}</span>}
           </div>
 
           <div className="form-group">
             <label>¿Has hecho ejercicio anteriormente? *</label>
             <div className="button-group">
               <Controller
-                name="haHechoEjercicio"
+                name="hasExercisedBefore"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -822,14 +824,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.haHechoEjercicio && <span className="error">{errors.haHechoEjercicio.message}</span>}
+            {errors.hasExercisedBefore && <span className="error">{errors.hasExercisedBefore.message}</span>}
           </div>
 
-          {watch('haHechoEjercicio') && (
+          {watch('hasExercisedBefore') && (
             <div className="form-group">
               <label htmlFor="tipoEjercicio">¿Qué tipo?</label>
               <Controller
-                name="tipoEjercicio"
+                name="exerciseType"
                 control={control}
                 render={({ field }) => (
                   <input
@@ -840,7 +842,7 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.tipoEjercicio && <span className="error">{errors.tipoEjercicio.message}</span>}
+              {errors.exerciseType && <span className="error">{errors.exerciseType.message}</span>}
             </div>
           )}
 
@@ -848,7 +850,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Con qué frecuencia hacías ejercicio antes? *</label>
             <div className="button-group">
               <Controller
-                name="frecuenciaEjercicio"
+                name="exerciseFrequency"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -866,7 +868,7 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.frecuenciaEjercicio && <span className="error">{errors.frecuenciaEjercicio.message}</span>}
+            {errors.exerciseFrequency && <span className="error">{errors.exerciseFrequency.message}</span>}
           </div>
           </section>
         )}
@@ -880,7 +882,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Cuál es tu objetivo principal? (puedes elegir más de uno) *</label>
             <div className="multi-select-group">
               <Controller
-                name="objetivos"
+                name="goals"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -905,14 +907,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.objetivos && <span className="error">{errors.objetivos.message}</span>}
+            {errors.goals && <span className="error">{errors.goals.message}</span>}
           </div>
 
-          {watch('objetivos')?.includes('otro') && (
+          {watch('goals')?.includes('otro') && (
             <div className="form-group">
               <label htmlFor="objetivoOtro">Especifica el otro objetivo</label>
               <Controller
-                name="objetivoOtro"
+                name="otherGoal"
                 control={control}
                 render={({ field }) => (
                   <input
@@ -923,14 +925,14 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.objetivoOtro && <span className="error">{errors.objetivoOtro.message}</span>}
+              {errors.otherGoal && <span className="error">{errors.otherGoal.message}</span>}
             </div>
           )}
 
           <div className="form-group">
             <label htmlFor="metaEspecifica">¿Tienes una meta específica o fecha límite?</label>
             <Controller
-              name="metaEspecifica"
+              name="specificGoal"
               control={control}
               render={({ field }) => (
                 <textarea
@@ -954,7 +956,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Te gustaría entrenar en la mañana, tarde o noche? *</label>
             <div className="button-group">
               <Controller
-                name="horarioPreferido"
+                name="preferredTime"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -972,14 +974,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.horarioPreferido && <span className="error">{errors.horarioPreferido.message}</span>}
+            {errors.preferredTime && <span className="error">{errors.preferredTime.message}</span>}
           </div>
 
           <div className="form-group">
             <label>¿Prefieres entrenar en casa o en el gimnasio? *</label>
             <div className="button-group">
               <Controller
-                name="lugarPreferido"
+                name="preferredLocation"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -997,13 +999,13 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.lugarPreferido && <span className="error">{errors.lugarPreferido.message}</span>}
+            {errors.preferredLocation && <span className="error">{errors.preferredLocation.message}</span>}
           </div>
 
           <div className="form-group">
             <label htmlFor="ejerciciosNoGustan">¿Hay ejercicios o actividades que no te gustan?</label>
             <Controller
-              name="ejerciciosNoGustan"
+              name="dislikedExercises"
               control={control}
               render={({ field }) => (
                 <textarea
@@ -1020,7 +1022,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Te gustaría que te mida con fotos, medidas corporales o solo sensaciones? *</label>
             <div className="button-group">
               <Controller
-                name="tipoMedicion"
+                name="measurementType"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -1038,7 +1040,7 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.tipoMedicion && <span className="error">{errors.tipoMedicion.message}</span>}
+            {errors.measurementType && <span className="error">{errors.measurementType.message}</span>}
           </div>
           </section>
         )}
@@ -1052,7 +1054,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Sigues algún tipo de alimentación específica? *</label>
             <div className="button-group">
               <Controller
-                name="sigueAlimentacionEspecifica"
+                name="followsSpecificDiet"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -1074,14 +1076,14 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.sigueAlimentacionEspecifica && <span className="error">{errors.sigueAlimentacionEspecifica.message}</span>}
+            {errors.followsSpecificDiet && <span className="error">{errors.followsSpecificDiet.message}</span>}
           </div>
 
-          {watch('sigueAlimentacionEspecifica') && (
+          {watch('followsSpecificDiet') && (
             <div className="form-group">
               <label htmlFor="tipoAlimentacion">¿Cuál?</label>
               <Controller
-                name="tipoAlimentacion"
+                name="dietType"
                 control={control}
                 render={({ field }) => (
                   <input
@@ -1092,14 +1094,14 @@ const ClientAssessmentForm: React.FC = () => {
                   />
                 )}
               />
-              {errors.tipoAlimentacion && <span className="error">{errors.tipoAlimentacion.message}</span>}
+              {errors.dietType && <span className="error">{errors.dietType.message}</span>}
             </div>
           )}
 
           <div className="form-group">
             <label htmlFor="alimentosNoGustan">¿Hay alimentos que no te gustan o no consumes?</label>
             <Controller
-              name="alimentosNoGustan"
+              name="dislikedFoods"
               control={control}
               render={({ field }) => (
                 <textarea
@@ -1116,7 +1118,7 @@ const ClientAssessmentForm: React.FC = () => {
             <label>¿Tomas suficiente agua a diario? *</label>
             <div className="button-group">
               <Controller
-                name="tomaSuficienteAgua"
+                name="drinksEnoughWater"
                 control={control}
                 render={({ field }) => (
                   <>
@@ -1134,13 +1136,13 @@ const ClientAssessmentForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.tomaSuficienteAgua && <span className="error">{errors.tomaSuficienteAgua.message}</span>}
+            {errors.drinksEnoughWater && <span className="error">{errors.drinksEnoughWater.message}</span>}
           </div>
 
           <div className="form-group">
             <label htmlFor="otrosDetalles">¿Hay algo que deba saber para adaptar mejor tu entrenamiento?</label>
             <Controller
-              name="otrosDetalles"
+              name="otherDetails"
               control={control}
               render={({ field }) => (
                 <textarea
@@ -1192,7 +1194,7 @@ const ClientAssessmentForm: React.FC = () => {
             <div className="form-group">
               <div className="checkbox-group">
                 <Controller
-                  name="aceptaTerminos"
+                  name="acceptsTerms"
                   control={control}
                   render={({ field }) => (
                     <label className="checkbox-label">
@@ -1209,14 +1211,14 @@ const ClientAssessmentForm: React.FC = () => {
                     </label>
                   )}
                 />
-                {errors.aceptaTerminos && <span className="error">{errors.aceptaTerminos.message}</span>}
+                {errors.acceptsTerms && <span className="error">{errors.acceptsTerms.message}</span>}
               </div>
             </div>
 
             <div className="form-group">
               <div className="checkbox-group">
                 <Controller
-                  name="aceptaProcesamientoDatos"
+                  name="acceptsDataProcessing"
                   control={control}
                   render={({ field }) => (
                     <label className="checkbox-label">
@@ -1234,7 +1236,30 @@ const ClientAssessmentForm: React.FC = () => {
                     </label>
                   )}
                 />
-                {errors.aceptaProcesamientoDatos && <span className="error">{errors.aceptaProcesamientoDatos.message}</span>}
+                {errors.acceptsDataProcessing && <span className="error">{errors.acceptsDataProcessing.message}</span>}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="checkbox-group">
+                <Controller
+                  name="subscribesToNewsletter"
+                  control={control}
+                  render={({ field }) => (
+                    <label className="checkbox-label">
+                      <input
+                        {...field}
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                      <span className="checkmark"></span>
+                      <span className="checkbox-text">
+                        Quiero <strong>suscribirme al boletín</strong> para recibir noticias y ofertas especiales
+                      </span>
+                    </label>
+                  )}
+                />
               </div>
             </div>
           </section>
