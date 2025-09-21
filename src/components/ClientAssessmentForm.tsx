@@ -14,9 +14,18 @@ const validateForm = (data: FormData): Record<string, string> => {
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'El email no es válido';
   if (!data.phone) errors.phone = 'El teléfono es requerido';
   if (data.phone && !/^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.phone)) errors.phone = 'El teléfono debe tener entre 9 y 15 dígitos';
-  if (!data.age || data.age < 16 || data.age > 100) errors.age = 'La edad debe estar entre 16 y 100 años';
+  if (!data.gender) errors.gender = 'El género es requerido';
+  if (!data.dateOfBirth) errors.dateOfBirth = 'La fecha de nacimiento es requerida';
+  if (data.dateOfBirth) {
+    const birthDate = new Date(data.dateOfBirth);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()) ? age - 1 : age;
+    if (actualAge < 16 || actualAge > 100) errors.dateOfBirth = 'Debes tener entre 16 y 100 años';
+  }
   if (!data.height || data.height < 100 || data.height > 250) errors.height = 'La altura debe estar entre 100 y 250 cm';
-  if (data.currentWeight && data.currentWeight !== '' && (data.currentWeight < 30 || data.currentWeight > 300)) errors.currentWeight = 'El peso debe estar entre 30 y 300 kg';
+  if (data.currentWeight && typeof data.currentWeight === 'number' && (data.currentWeight < 30 || data.currentWeight > 300)) errors.currentWeight = 'El peso debe estar entre 30 y 300 kg';
   if (!data.preferredTimes) errors.preferredTimes = 'Los horarios preferidos son requeridos';
   if (!data.exerciseFrequency) errors.exerciseFrequency = 'La frecuencia de ejercicio es requerida';
   if (!data.goals || data.goals.length === 0) errors.goals = 'Selecciona al menos un objetivo';
@@ -35,19 +44,28 @@ const validateForm = (data: FormData): Record<string, string> => {
 const validateStep = (step: number, data: FormData): boolean => {
   switch (step) {
     case 1: // Personal Information
+      const isAgeValid = data.dateOfBirth ? (() => {
+        const birthDate = new Date(data.dateOfBirth);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()) ? age - 1 : age;
+        return actualAge >= 16 && actualAge <= 100;
+      })() : false;
+      
       return !!(
         data.fullName && 
         data.email && 
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) &&
         data.phone && 
         /^[\+]?[0-9\s\-\(\)]{9,15}$/.test(data.phone) &&
-        data.age && 
-        data.age >= 16 && 
-        data.age <= 100 &&
+        data.gender &&
+        data.dateOfBirth &&
+        isAgeValid &&
         data.height && 
         data.height >= 100 && 
         data.height <= 250 &&
-        (data.currentWeight === undefined || data.currentWeight === '' || data.currentWeight === null || (data.currentWeight >= 30 && data.currentWeight <= 300)) &&
+        (data.currentWeight === undefined || data.currentWeight === null || (typeof data.currentWeight === 'number' && data.currentWeight >= 30 && data.currentWeight <= 300)) &&
         data.comfortableWithWeighing !== undefined
       );
     case 2: // Health and Medical History
@@ -81,7 +99,8 @@ interface FormData {
   fullName: string;
   email: string;
   phone: string;
-  age: number;
+  gender: string;
+  dateOfBirth: string;
   height: number;
   currentWeight?: number;
   comfortableWithWeighing: boolean;
@@ -143,6 +162,8 @@ const ClientAssessmentForm: React.FC = () => {
     defaultValues: {
       email: '',
       phone: '',
+      gender: '',
+      dateOfBirth: '',
       availableDays: [],
       goals: [],
       comfortableWithWeighing: false,
@@ -188,7 +209,7 @@ const ClientAssessmentForm: React.FC = () => {
       });
 
       console.log('API response status:', response.status);
-      const responseData = await response.json();
+      const responseData = await response.json() as { error?: string; success?: boolean };
       console.log('API response data:', responseData);
 
       if (response.ok) {
@@ -200,7 +221,8 @@ const ClientAssessmentForm: React.FC = () => {
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      alert(`Hubo un error al enviar el formulario: ${error.message}. Por favor, inténtalo de nuevo.`);
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      alert(`Hubo un error al enviar el formulario: ${errorMessage}. Por favor, inténtalo de nuevo.`);
     }
   };
 
@@ -406,26 +428,54 @@ const ClientAssessmentForm: React.FC = () => {
             {errors.phone && <span className="error">{errors.phone.message}</span>}
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="age">Edad *</label>
+          <div className="form-group">
+            <label>Género *</label>
+            <div className="button-group">
               <Controller
-                name="age"
+                name="gender"
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type="number"
-                    id="age"
-                    min="16"
-                    max="100"
-                    onChange={(e) => field.onChange(parseInt(e.target.value) || '')}
-                  />
+                  <>
+                    <OptionButton
+                      value="female"
+                      label="Femenino"
+                      isSelected={field.value === 'female'}
+                      onClick={() => field.onChange('female')}
+                      icon="👩"
+                    />
+                    <OptionButton
+                      value="male"
+                      label="Masculino"
+                      isSelected={field.value === 'male'}
+                      onClick={() => field.onChange('male')}
+                      icon="👨"
+                    />
+                  </>
                 )}
               />
-              {errors.age && <span className="error">{errors.age.message}</span>}
             </div>
+            {errors.gender && <span className="error">{errors.gender.message}</span>}
+          </div>
 
+          <div className="form-group">
+            <label htmlFor="dateOfBirth">Fecha de nacimiento *</label>
+            <Controller
+              name="dateOfBirth"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="date"
+                  id="dateOfBirth"
+                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 16)).toISOString().split('T')[0]}
+                  min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
+                />
+              )}
+            />
+            {errors.dateOfBirth && <span className="error">{errors.dateOfBirth.message}</span>}
+          </div>
+
+          <div className="form-row">
             <div className="form-group">
               <label htmlFor="height">Altura (cm) *</label>
               <Controller
@@ -1199,10 +1249,12 @@ const ClientAssessmentForm: React.FC = () => {
                   render={({ field }) => (
                     <label className="checkbox-label">
                       <input
-                        {...field}
                         type="checkbox"
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                       <span className="checkmark"></span>
                       <span className="checkbox-text">
@@ -1223,10 +1275,12 @@ const ClientAssessmentForm: React.FC = () => {
                   render={({ field }) => (
                     <label className="checkbox-label">
                       <input
-                        {...field}
                         type="checkbox"
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                       <span className="checkmark"></span>
                       <span className="checkbox-text">
@@ -1248,10 +1302,12 @@ const ClientAssessmentForm: React.FC = () => {
                   render={({ field }) => (
                     <label className="checkbox-label">
                       <input
-                        {...field}
                         type="checkbox"
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                       <span className="checkmark"></span>
                       <span className="checkbox-text">
