@@ -1,7 +1,7 @@
 ---
 title: "🏋️‍♀️ Entrenamiento Presencial Individual"
 description: "Sesiones 1 a 1 en tu casa o espacio al aire libre"
-price: "€25"
+price: "€35"
 icon: "🏋️‍♀️"
 slug: "entrenamiento-presencial"
 features:
