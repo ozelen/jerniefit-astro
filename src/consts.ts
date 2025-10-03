@@ -9,7 +9,7 @@ export const TRAINER_NAME = "Jernie Richard";
 export const TRAINER_AGE = "31 años";
 export const TRAINER_LOCATION = "Valencia, España";
 export const TRAINER_ORIGIN = "Dominicana";
-export const EXPERIENCE_YEARS = "15+ años";
+export const EXPERIENCE_YEARS = "+15 años";
 
 // Contact information
 export const WHATSAPP_NUMBER = "+34-695-25-10-13"; // Update with real number
