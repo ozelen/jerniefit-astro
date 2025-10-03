@@ -135,7 +135,7 @@
   background: #000000;
   border: 2px solid #333333;
   color: #ffffff;
-  border-radius: 0;
+  border-radius: 12px;
   transition: border-color 0.3s ease;
   font-family: inherit;
 }
