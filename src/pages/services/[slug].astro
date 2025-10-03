@@ -157,17 +157,147 @@ const { service } = Astro.props;
 				text-decoration: underline;
 			}
 			
-			@media (max-width: 768px) {
+			/* Tablet and small desktop */
+			@media (max-width: 1024px) {
 				.service-header h1 {
-					font-size: 2rem;
+					font-size: 2.5rem;
 				}
 				
-				.service-header p {
-					font-size: 1rem;
+				.service-content {
+					padding: 30px 20px;
+				}
+			}
+			
+			/* Mobile landscape and small tablets */
+			@media (max-width: 768px) {
+				.service-container {
+					padding-top: 80px;
+				}
+				
+				.service-header {
+					padding: 40px 15px 30px;
+				}
+				
+				.service-header h1 {
+					font-size: 1.8rem;
+					margin-bottom: 0.8rem;
+					line-height: 1.2;
 				}
 				
 				.service-header .price {
+					font-size: 1.3rem;
+					margin: 0.8rem 0;
+				}
+				
+				.service-header p {
+					font-size: 0.95rem;
+					line-height: 1.5;
+				}
+				
+				.service-content {
+					padding: 30px 15px;
+				}
+				
+				.features-section h3 {
+					font-size: 1.3rem;
+					margin-bottom: 0.8rem;
+				}
+				
+				.features-list li {
+					padding: 12px 15px;
+					font-size: 0.9rem;
+				}
+				
+				.cta-section {
+					padding: 25px 20px;
+					margin: 30px 0;
+				}
+				
+				.cta-button {
+					padding: 16px 30px;
+					font-size: 1rem;
+				}
+			}
+			
+			/* Mobile portrait */
+			@media (max-width: 480px) {
+				.service-container {
+					padding-top: 70px;
+				}
+				
+				.service-header {
+					padding: 30px 10px 25px;
+				}
+				
+				.service-header h1 {
 					font-size: 1.5rem;
+					margin-bottom: 0.6rem;
+					letter-spacing: 1px;
+				}
+				
+				.service-header .price {
+					font-size: 1.1rem;
+					margin: 0.6rem 0;
+				}
+				
+				.service-header p {
+					font-size: 0.85rem;
+					line-height: 1.4;
+				}
+				
+				.service-content {
+					padding: 25px 10px;
+				}
+				
+				.features-section h3 {
+					font-size: 1.1rem;
+					margin-bottom: 0.6rem;
+				}
+				
+				.features-list li {
+					padding: 10px 12px;
+					font-size: 0.85rem;
+					margin: 8px 0;
+				}
+				
+				.cta-section {
+					padding: 20px 15px;
+					margin: 25px 0;
+				}
+				
+				.cta-button {
+					padding: 14px 25px;
+					font-size: 0.9rem;
+				}
+				
+				.back-link {
+					font-size: 0.9rem;
+					margin-bottom: 15px;
+				}
+			}
+			
+			/* Very small screens */
+			@media (max-width: 360px) {
+				.service-header h1 {
+					font-size: 1.3rem;
+				}
+				
+				.service-header .price {
+					font-size: 1rem;
+				}
+				
+				.service-header p {
+					font-size: 0.8rem;
+				}
+				
+				.features-list li {
+					padding: 8px 10px;
+					font-size: 0.8rem;
+				}
+				
+				.cta-button {
+					padding: 12px 20px;
+					font-size: 0.85rem;
 				}
 			}
 		</style>

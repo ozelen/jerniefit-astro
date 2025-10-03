@@ -560,36 +560,201 @@ const promoService = services.find(service => service.data.isPromo);
 				font-weight: 600;
 			}
 			
-			@media (max-width: 768px) {
+			/* Tablet and small desktop */
+			@media (max-width: 1024px) {
 				.hero h1 {
-					font-size: 2.5rem;
+					font-size: 3.2rem;
 				}
 				
 				.hero .subtitle {
-					font-size: 1.1rem;
+					font-size: 1.2rem;
+				}
+				
+				.about-grid {
+					gap: 60px;
+				}
+				
+				.section h2 {
+					font-size: 2.2rem;
+				}
+			}
+			
+			/* Mobile landscape and small tablets */
+			@media (max-width: 768px) {
+				.container {
+					padding: 0 15px;
+				}
+				
+				.hero {
+					min-height: 80vh;
+				}
+				
+				.hero-content {
+					bottom: 40px;
+					padding: 0 15px;
+				}
+				
+				.hero h1 {
+					font-size: 2.2rem;
+					margin-bottom: 1.5rem;
+					line-height: 1.2;
+				}
+				
+				.hero .subtitle {
+					font-size: 1rem;
+					margin-bottom: 2rem;
 				}
 				
 				.about-grid {
 					grid-template-columns: 1fr;
-					gap: 50px;
+					gap: 40px;
+				}
+				
+				.about-content h3 {
+					font-size: 1.6rem;
+				}
+				
+				.about-content p {
+					font-size: 1rem;
 				}
 				
 				.cta-buttons {
 					flex-direction: column;
 					align-items: center;
+					gap: 15px;
+					margin-top: 2rem;
 				}
 				
 				.btn {
 					width: 100%;
-					max-width: 350px;
+					max-width: 300px;
+					padding: 16px 30px;
+					font-size: 1rem;
+				}
+				
+				.section {
+					padding: 60px 0;
 				}
 				
 				.section h2 {
-					font-size: 2rem;
+					font-size: 1.8rem;
+					margin-bottom: 2rem;
 				}
 				
 				.services-grid {
 					grid-template-columns: 1fr;
+					gap: 30px;
+				}
+				
+				.service-card {
+					padding: 30px 20px;
+				}
+				
+				.contact-methods {
+					grid-template-columns: 1fr;
+					gap: 1.5rem;
+				}
+			}
+			
+			/* Mobile portrait */
+			@media (max-width: 480px) {
+				.container {
+					padding: 0 10px;
+				}
+				
+				.hero {
+					min-height: 70vh;
+				}
+				
+				.hero-content {
+					bottom: 30px;
+					padding: 0 10px;
+				}
+				
+				.hero h1 {
+					font-size: 1.8rem;
+					margin-bottom: 1rem;
+					letter-spacing: 1px;
+				}
+				
+				.hero .subtitle {
+					font-size: 0.9rem;
+					margin-bottom: 1.5rem;
+				}
+				
+				.about-grid {
+					gap: 30px;
+				}
+				
+				.about-content h3 {
+					font-size: 1.4rem;
+					margin-bottom: 1rem;
+				}
+				
+				.about-content p {
+					font-size: 0.9rem;
+					line-height: 1.5;
+				}
+				
+				.cta-buttons {
+					gap: 12px;
+					margin-top: 1.5rem;
+				}
+				
+				.btn {
+					max-width: 280px;
+					padding: 14px 25px;
+					font-size: 0.9rem;
+				}
+				
+				.section {
+					padding: 40px 0;
+				}
+				
+				.section h2 {
+					font-size: 1.6rem;
+					margin-bottom: 1.5rem;
+				}
+				
+				.service-card {
+					padding: 25px 15px;
+				}
+				
+				.service-card h3 {
+					font-size: 1.2rem;
+				}
+				
+				.service-card p {
+					font-size: 0.9rem;
+				}
+			}
+			
+			/* Very small screens */
+			@media (max-width: 360px) {
+				.hero h1 {
+					font-size: 1.6rem;
+				}
+				
+				.hero .subtitle {
+					font-size: 0.85rem;
+				}
+				
+				.btn {
+					max-width: 250px;
+					padding: 12px 20px;
+					font-size: 0.85rem;
+				}
+				
+				.section h2 {
+					font-size: 1.4rem;
+				}
+				
+				.about-content h3 {
+					font-size: 1.2rem;
+				}
+				
+				.about-content p {
+					font-size: 0.85rem;
 				}
 			}
 		</style>
